@@ -26,6 +26,7 @@ public class GameService {
 
 
         Arrays.stream(dto.getPlayerNames())
+                .limit(2)
                  .forEach(item -> {
                     players.add(Player.builder()
                             .name(item)
