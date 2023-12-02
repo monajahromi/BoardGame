@@ -5,6 +5,8 @@ import com.game.mancala.model.dto.PlayDto;
 import com.game.mancala.model.dto.StartDto;
 import com.game.mancala.model.entity.GameEntity;
 import com.game.mancala.model.entity.Player;
+import com.game.mancala.rule.GameCreateRule;
+import com.game.mancala.rule.GamePlayRule;
 import com.game.mancala.utils.GameStatus;
 import org.springframework.stereotype.Service;
 import com.game.mancala.repository.GameRepository;
@@ -17,10 +19,13 @@ import java.util.List;
 @Service
 public class GameService {
     private final GameRepository repository;
+    private final GamePlayRule playRule;
+    private final GameCreateRule createRule;
 
-
-    public GameService(GameRepository repository) {
+    public GameService(GameRepository repository, GamePlayRule playRule, GameCreateRule createRule) {
         this.repository = repository;
+        this.playRule = playRule;
+        this.createRule = createRule;
     }
 
     public GameEntity create(StartDto dto) {
@@ -28,7 +33,7 @@ public class GameService {
 
 
         Arrays.stream(dto.getPlayerNames())
-                .limit(2)
+                .limit(createRule.maximumAllowedPlayer())
                  .forEach(item -> {
                     players.add(Player.builder()
                             .name(item)
@@ -40,10 +45,8 @@ public class GameService {
                 .status(GameStatus.PLAYING)
                 .build();
 
-        game.getPlayers().get(0).setActive(true);
-        game.getPlayers().forEach(item->{
-            item.setPits(Arrays.stream(new int[dto.getPitsCount()]).map(i -> dto.getStonesPerPit()).toArray());
-        });
+        createRule.initializeActivePlayer(game);
+        createRule.initializePits(game,dto);
 
         return repository.save(game);
     }
@@ -52,7 +55,14 @@ public class GameService {
         GameEntity game = repository.findById(dto.getGameId()).orElseThrow(
                 () -> new NotFoundException("game not found!")
         );
-        //Implementing logic of play
-        return repository.save(game);
+        //check if write player is playing!
+        if (!playRule.getActivePlayer(game)
+                .getName().toLowerCase()
+                .trim()
+                .equals(dto.getPlayerName())) {
+            throw new IllegalArgumentException("It's not " + dto.getPlayerName() + " turn!");
+        }
+
+        return repository.save(playRule.play(game, dto.getSelectedPit()));
     }
 }
