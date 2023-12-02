@@ -1,5 +1,6 @@
 package com.game.mancala.controller;
 
+import com.game.mancala.model.dto.StartDto;
 import com.game.mancala.model.entity.GameEntity;
 import com.game.mancala.service.GameService;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ public class MancalaController {
 
 
     @PostMapping("start")
-    public ResponseEntity<GameEntity> create(@RequestBody GameEntity game) {
+    public ResponseEntity<GameEntity> create(@RequestBody StartDto game) {
         return new ResponseEntity<>(gameService.create(game), HttpStatus.CREATED);
     }
 
