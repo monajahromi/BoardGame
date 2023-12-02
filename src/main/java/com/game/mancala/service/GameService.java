@@ -1,5 +1,7 @@
 package com.game.mancala.service;
 
+import com.game.mancala.exception.NotFoundException;
+import com.game.mancala.model.dto.PlayDto;
 import com.game.mancala.model.dto.StartDto;
 import com.game.mancala.model.entity.GameEntity;
 import com.game.mancala.model.entity.Player;
@@ -46,7 +48,11 @@ public class GameService {
         return repository.save(game);
     }
 
-    public GameEntity play(GameEntity game)  {
+    public GameEntity play(PlayDto dto) throws NotFoundException {
+        GameEntity game = repository.findById(dto.getGameId()).orElseThrow(
+                () -> new NotFoundException("game not found!")
+        );
+        //Implementing logic of play
         return repository.save(game);
     }
 }

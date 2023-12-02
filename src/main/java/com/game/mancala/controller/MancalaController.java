@@ -1,5 +1,7 @@
 package com.game.mancala.controller;
 
+import com.game.mancala.exception.NotFoundException;
+import com.game.mancala.model.dto.PlayDto;
 import com.game.mancala.model.dto.StartDto;
 import com.game.mancala.model.entity.GameEntity;
 import com.game.mancala.service.GameService;
@@ -19,15 +21,14 @@ public class MancalaController {
         this.gameService = gameService;
     }
 
-
     @PostMapping("start")
-    public ResponseEntity<GameEntity> create(@RequestBody StartDto game) {
-        return new ResponseEntity<>(gameService.create(game), HttpStatus.CREATED);
+    public ResponseEntity<GameEntity> create(@RequestBody StartDto dto) {
+        return new ResponseEntity<>(gameService.create(dto), HttpStatus.CREATED);
     }
 
     @PutMapping("play")
-    public ResponseEntity<GameEntity> play(@RequestBody GameEntity game)  {
-        return new ResponseEntity<>(gameService.play(game), HttpStatus.CREATED);
+    public ResponseEntity<GameEntity> play(@RequestBody PlayDto dto) throws NotFoundException {
+        return new ResponseEntity<>(gameService.play(dto), HttpStatus.CREATED);
     }
 
 }
