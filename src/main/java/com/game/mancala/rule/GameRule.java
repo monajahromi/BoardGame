@@ -16,4 +16,12 @@ public interface GameRule {
                 .get();
     }
 
+    default boolean isTurnSwitchConditionMet(GameEntity game, int selectedPit, int stoneCounts) {
+        // The condition for a turn switch is met if the remainder of dividing stoneCounts
+        // by the total number of pits in the game is equal to the distance to the big pit.
+
+        int distanceToBigPit = game.getPitsPerPlayer() - selectedPit;
+        return stoneCounts % game.getTotalPits() != distanceToBigPit;
+    }
+
 }

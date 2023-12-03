@@ -63,17 +63,20 @@ public class TwoPlayerGamePlayRule implements GamePlayRule {
         activePlayer.increaseBigPit(waitingPlayer.getPits()[5 - index] + 1);
         waitingPlayer.getPits()[5 - index] = 0;
     }
-    public void switchTurn(GameEntity game) {
 
-        getWaitingPlayers(game).setActive(true);
-        getActivePlayer(game).setActive(false);
-    }
+
     public Player getWaitingPlayers(GameEntity game) {
 
         return game.getPlayers().stream()
                 .filter(item -> !item.isActive())
                 .findFirst()
                 .get();
+    }
+
+    public void switchTurn(GameEntity game) {
+
+        getWaitingPlayers(game).setActive(true);
+        getActivePlayer(game).setActive(false);
     }
 
 }

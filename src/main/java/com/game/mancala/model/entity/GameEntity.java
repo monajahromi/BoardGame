@@ -26,6 +26,13 @@ public class GameEntity {
     @CollectionTable(name="game_player",
     joinColumns = @JoinColumn(name="game_id"))
     private List<Player> players;
+    public int getTotalPits() {
+        return players.size() * getPitsPerPlayer() + players.size();
+    }
+
+    public int getPitsPerPlayer() {
+        return players.get(0).getPits().length;
+    }
 
 
 }
