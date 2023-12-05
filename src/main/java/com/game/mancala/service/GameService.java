@@ -6,6 +6,7 @@ import com.game.mancala.model.dto.StartDto;
 import com.game.mancala.model.entity.GameEntity;
 import com.game.mancala.rule.GameCreateRule;
 import com.game.mancala.rule.GamePlayRule;
+import com.game.mancala.utils.GameStatus;
 import org.springframework.stereotype.Service;
 import com.game.mancala.repository.GameRepository;
 
@@ -36,5 +37,13 @@ public class GameService {
         );
 
         return repository.save(playRule.play(game, dto.getPlayerName(), dto.getSelectedPit()));
+    }
+    public GameEntity cancel(PlayDto dto) throws NotFoundException {
+        GameEntity game = repository.findById(dto.getGameId()).orElseThrow(
+                () -> new NotFoundException("game not found!")
+        );
+        game.setStatus(GameStatus.CANCELED);
+
+        return repository.save(game);
     }
 }

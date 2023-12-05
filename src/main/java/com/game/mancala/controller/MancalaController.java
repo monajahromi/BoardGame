@@ -31,4 +31,8 @@ public class MancalaController {
         return new ResponseEntity<>(gameService.play(dto), HttpStatus.CREATED);
     }
 
+    @PutMapping("cancel")
+    public ResponseEntity<GameEntity> cancel(@RequestBody PlayDto dto) throws NotFoundException {
+        return new ResponseEntity<>(gameService.cancel(dto), HttpStatus.CREATED);
+    }
 }
