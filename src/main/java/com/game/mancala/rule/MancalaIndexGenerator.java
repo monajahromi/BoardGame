@@ -6,19 +6,23 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class IndexGenerator {
+public class MancalaIndexGenerator {
 
 
     // Generates indexes based on the provided parameters.
     public static List<int[]> generateIndexes(int rowNum, int colNum,
                                               int selectedRow, int selectedCol,
                                               int stoneCount) {
-        List<int[]> indexes = new ArrayList<>();
+         List<int[]> indexes = new ArrayList<>();
 
         // generates indexes for first row
         indexes.addAll(IntStream.range(selectedCol + 1, colNum)
-                .mapToObj(i -> new int[]{selectedRow, i})
+                .mapToObj(i -> new int[]{selectedRow, i}).limit(stoneCount)
                 .collect(Collectors.toList()));
+
+        stoneCount -= colNum - selectedCol - 1;
+        if (stoneCount <= 0)
+            return indexes;
 
         // generate index for remaining stones,
         int currentRow = (selectedRow + 1) % rowNum;
@@ -42,11 +46,10 @@ public class IndexGenerator {
 
     //generate index for specific row in reverse order, including last column
     private static List<int[]> generateReverseRowIndexes(int row, int colNum) {
-        List<int[]> a = IntStream.rangeClosed(0, colNum - 2)
+        List<int[]> indexes = IntStream.rangeClosed(0, colNum - 2)
                 .mapToObj(j -> new int[]{row, colNum - 2 - j})
                 .collect(Collectors.toList());
-        a.add(new int[]{row, colNum - 1});
-        return a;
+        return indexes;
     }
 
 
@@ -60,5 +63,7 @@ public class IndexGenerator {
         List<int[]> result = generateIndexes(rowNum, colNum, selectedRow, selectedCol, stoneCount);
         result.forEach(item -> System.out.println(Arrays.toString(item)));
     }
+
+
 
 }

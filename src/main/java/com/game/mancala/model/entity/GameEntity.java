@@ -3,8 +3,12 @@ package com.game.mancala.model.entity;
 import jakarta.persistence.*;
 import com.game.mancala.utils.GameStatus;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @NoArgsConstructor
@@ -15,6 +19,7 @@ import java.util.List;
 @Table(name = "game")
 @Builder
 public class GameEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -22,17 +27,17 @@ public class GameEntity {
     @Enumerated(EnumType.STRING)
     private GameStatus status;
 
-    @ElementCollection
-    @CollectionTable(name="game_player",
-    joinColumns = @JoinColumn(name="game_id"))
-    private List<Player> players;
-    public int getTotalPits() {
-        return players.size() * getPitsPerPlayer() + players.size();
-    }
+    @JdbcTypeCode(SqlTypes.JSON)
+     private int[][] gameMatrix ;
 
-    public int getPitsPerPlayer() {
-        return players.get(0).getPits().length;
-    }
+    private int activePlayerIndex;
+    private int winnerPlayerIndex;
+
+
+    @ElementCollection
+    @CollectionTable(name = "game_player",
+            joinColumns = @JoinColumn(name = "game_id"))
+    private List<Player> players;
 
 
 }

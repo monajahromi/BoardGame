@@ -13,13 +13,6 @@ import lombok.*;
 @ToString
 public class Player {
 
-    private int[] pits;
-    private int bigPit;
     private String name;
-    private boolean isActive;
 
-
-    public void increaseBigPit(int num) {
-        this.bigPit = bigPit + num;
-    }
 }
