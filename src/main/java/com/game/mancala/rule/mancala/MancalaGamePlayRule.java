@@ -4,6 +4,7 @@ import com.game.mancala.model.entity.GameEntity;
 import com.game.mancala.rule.GamePlayRule;
 import com.game.mancala.utils.GameStatus;
 import org.springframework.stereotype.Service;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -24,9 +25,9 @@ public class MancalaGamePlayRule implements GamePlayRule {
         }
         boolean needsToggleTurn = isToggleTurnConditionMet(game, selectedPit);
 
-
+        int stoneCount = getStonesCount(game , selectedPit) ;
         performMove(game, selectedPit);
-
+        capturingStones(game, selectedPit, stoneCount) ;
         if (needsToggleTurn)
             toggleTurn(game, selectedPit);
 
@@ -50,9 +51,7 @@ public class MancalaGamePlayRule implements GamePlayRule {
                         selectedPit,
                         game.getGameMatrix()[game.getActivePlayerIndex()][selectedPit]
                 );
-        indexesForAddingStones.forEach(i -> System.out.println(Arrays.toString(i)));
         for (int[] item : indexesForAddingStones) {
-            System.out.println();
             game.getGameMatrix()[item[0]][item[1]] = game.getGameMatrix()[item[0]][item[1]] + 1;
         }
         game.getGameMatrix()[game.getActivePlayerIndex()][selectedPit] = 0;
@@ -68,15 +67,29 @@ public class MancalaGamePlayRule implements GamePlayRule {
     boolean isToggleTurnConditionMet(GameEntity game, int selectedPit) {
         // The condition for a turn switch is met if the remainder of dividing stoneCounts
         // by the total number of pits a stone can traverse in one cycle
+        int totalPitsExcludingBigPits = calculateTotalPitsExcludingBigPits(game);
+        int distanceToBigPit = totalPitsExcludingBigPits - selectedPit;
 
-        int pitsPerPlayerExcludedBigPit = game.getGameMatrix()[0].length - 1;
-        int pitsStoneCanTraverse = (game.getGameMatrix().length * pitsPerPlayerExcludedBigPit) + 1;
-        int stoneCounts = game.getGameMatrix()[game.getActivePlayerIndex()][selectedPit];
-
-        int distanceToBigPit = pitsPerPlayerExcludedBigPit - selectedPit;
-
-        return stoneCounts % pitsStoneCanTraverse != distanceToBigPit;
+        return getStonesCount(game, selectedPit) % (totalPitsExcludingBigPits + 1) != distanceToBigPit;
     }
+
+    // Calculate the total number of pits in the ground, excluding big pits
+    private int calculateTotalPitsExcludingBigPits(GameEntity game) {
+        return playersCount(game) * playerPitsExcludingBigPits(game);
+    }
+
+    private int getStonesCount(GameEntity game, int selectedPit) {
+        return game.getGameMatrix()[game.getActivePlayerIndex()][selectedPit];
+    }
+
+    private int playerPitsExcludingBigPits(GameEntity game) {
+        return game.getGameMatrix()[0].length - 1;
+    }
+
+    private int playersCount(GameEntity game) {
+        return game.getGameMatrix().length;
+    }
+
 
     @Override
     public boolean validatePlayerTurn(GameEntity game, String inputPlayerName) {
@@ -88,7 +101,7 @@ public class MancalaGamePlayRule implements GamePlayRule {
 
     @Override
     public boolean isMoveValid(GameEntity game, int selectedPit) {
-        if (selectedPit > game.getGameMatrix()[0].length - 1) {
+        if (selectedPit > playerPitsExcludingBigPits(game)) {
             return false;
         }
         return game.getGameMatrix()[game.getActivePlayerIndex()][selectedPit] > 0;
@@ -124,5 +137,23 @@ public class MancalaGamePlayRule implements GamePlayRule {
 
     }
 
+    public void capturingStones(GameEntity game, int selectedPit, int stoneCount) {
+        int lastStoneIndex = stoneCount + selectedPit;
+        int pitsStoneCanTraverse = calculateTotalPitsExcludingBigPits(game) + 1;
 
+        if (shouldCaptureStones(game, selectedPit, lastStoneIndex, pitsStoneCanTraverse)) {
+            int capturingStonesCount = Arrays.stream(game.getGameMatrix())
+                    .mapToInt(pits -> pits[lastStoneIndex % pitsStoneCanTraverse])
+                    .sum();
+
+            game.getGameMatrix()[game.getActivePlayerIndex()][playerPitsExcludingBigPits(game)] += capturingStonesCount;
+
+            Arrays.stream(game.getGameMatrix())
+                    .forEach(pits -> pits[lastStoneIndex % pitsStoneCanTraverse] = 0);
+        }
+    }
+    private boolean shouldCaptureStones(GameEntity game, int selectedPit, int lastStoneIndex, int pitsStoneCanTraverse) {
+        return lastStoneIndex % pitsStoneCanTraverse < playerPitsExcludingBigPits(game)
+                && game.getGameMatrix()[game.getActivePlayerIndex()][selectedPit] == 1;
+    }
 }
