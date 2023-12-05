@@ -38,6 +38,7 @@ public class MancalaGameCreateRule implements GameCreateRule {
 
         GameEntity game = new GameEntity();
         game.setPlayers(players);
+        game.setName("Mancala");
         game.setStatus(GameStatus.PLAYING);
         game.setGameMatrix(matrixGenerator(pitsCount, stonesPerPit));
 

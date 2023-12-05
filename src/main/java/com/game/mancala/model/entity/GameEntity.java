@@ -24,6 +24,7 @@ public class GameEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    private String name;
     @Enumerated(EnumType.STRING)
     private GameStatus status;
 
@@ -32,7 +33,6 @@ public class GameEntity {
 
     private int activePlayerIndex;
     private int winnerPlayerIndex;
-
 
     @ElementCollection
     @CollectionTable(name = "game_player",
