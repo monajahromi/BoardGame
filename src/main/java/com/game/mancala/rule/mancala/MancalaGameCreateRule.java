@@ -1,9 +1,10 @@
-package com.game.mancala.rule;
+package com.game.mancala.rule.mancala;
 
 
 import com.game.mancala.model.dto.StartDto;
 import com.game.mancala.model.entity.GameEntity;
 import com.game.mancala.model.entity.Player;
+import com.game.mancala.rule.GameCreateRule;
 import com.game.mancala.utils.GameStatus;
 import com.game.mancala.utils.MancalaConfig;
 import org.springframework.stereotype.Service;

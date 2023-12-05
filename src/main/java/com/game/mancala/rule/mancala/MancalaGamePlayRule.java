@@ -1,6 +1,7 @@
-package com.game.mancala.rule;
+package com.game.mancala.rule.mancala;
 
 import com.game.mancala.model.entity.GameEntity;
+import com.game.mancala.rule.GamePlayRule;
 import com.game.mancala.utils.GameStatus;
 import org.springframework.stereotype.Service;
 import java.util.Arrays;

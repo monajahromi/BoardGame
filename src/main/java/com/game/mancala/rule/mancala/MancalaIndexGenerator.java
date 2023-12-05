@@ -1,4 +1,4 @@
-package com.game.mancala.rule;
+package com.game.mancala.rule.mancala;
 
 import java.util.ArrayList;
 import java.util.Arrays;
