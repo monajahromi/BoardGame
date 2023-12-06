@@ -80,8 +80,8 @@ public class GamePlayRuleTest {
     @ParameterizedTest
     @MethodSource("provideGameEntitiesForMove")
     void testPerformMove(GameEntity initialGame, int selectedPit, int[][] expectedBoard) {
-        GameEntity result = playRule.performMove(initialGame, selectedPit);
-        assertArrayEquals(expectedBoard, result.getGameMatrix());
+        int[][] result = playRule.performMove(initialGame, selectedPit);
+        assertArrayEquals(expectedBoard, result);
     }
 
     static Stream<Arguments> provideGameEntitiesForMove() {

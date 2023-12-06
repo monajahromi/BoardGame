@@ -7,7 +7,7 @@ import com.game.mancala.utils.GameStatus;
 public interface GamePlayRule {
     GameEntity play(GameEntity game, String playerName, int selectedRow);
 
-    GameEntity performMove(GameEntity game, int selectedRow);
+    int[][] performMove(GameEntity game, int selectedRow);
 
     void toggleTurn(GameEntity game, int selectedRow);
 
@@ -15,11 +15,11 @@ public interface GamePlayRule {
 
     boolean isMoveValid(GameEntity game, int selectedRow);
 
-    boolean hasGameEnded(GameEntity game);
+    boolean hasGameEnded(int[][] gameBoard);
 
-    void onGameEnd(GameEntity game);
+    void onGameEnd(int[][] gameBoard);
 
-    void findWinningPlayer(GameEntity game);
+    int findWinningPlayer(int[][] gameBoard);
 
     default boolean isPlayableGame(GameEntity game) {
         return game.getStatus().equals(GameStatus.PLAYING);
