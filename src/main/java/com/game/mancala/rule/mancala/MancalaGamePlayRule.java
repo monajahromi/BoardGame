@@ -25,11 +25,11 @@ public class MancalaGamePlayRule implements GamePlayRule {
         }
 
         int[][] updatedGameBoard = performMove(game, selectedPit);
-        if (shouldCaptureStones(game, selectedPit)) {
+        if (shouldCaptureStones(game.getGameMatrix(), selectedPit, game.getActivePlayerIndex())) {
             int lastStoneIndex = getStonesCount(game, selectedPit) + selectedPit;
             int pitsStoneCanTraverse = calculateTotalPitsExcludingBigPits(game) + 1;
             int captureIndex = lastStoneIndex % pitsStoneCanTraverse;
-            capturingStones(updatedGameBoard, captureIndex,game.getActivePlayerIndex());
+            capturingStones(updatedGameBoard, captureIndex, game.getActivePlayerIndex());
 
         }
 
@@ -49,21 +49,22 @@ public class MancalaGamePlayRule implements GamePlayRule {
     }
 
     public void capturingStones(int[][] board, int captureIndex, int playerIndex) {
-         int capturingStonesCount = Arrays.stream(board)
-                    .mapToInt(row -> row[captureIndex])
-                    .sum();
+        int capturingStonesCount = Arrays.stream(board)
+                .mapToInt(row -> row[captureIndex])
+                .sum();
 
-            board[captureIndex][board[0].length - 1] += capturingStonesCount;
+        board[captureIndex][board[0].length - 1] += capturingStonesCount;
 
-            Arrays.stream(board)
-                    .forEach(row -> row[captureIndex] = 0);
+        Arrays.stream(board)
+                .forEach(row -> row[captureIndex] = 0);
 
     }
-    private boolean shouldCaptureStones(GameEntity game, int selectedPit) {
-        int lastStoneIndex = getStonesCount(game, selectedPit) + selectedPit;
-        int pitsStoneCanTraverse = calculateTotalPitsExcludingBigPits(game) + 1;
-        return lastStoneIndex % pitsStoneCanTraverse < playerPitsExcludingBigPits(game)
-                && game.getGameMatrix()[game.getActivePlayerIndex()][selectedPit] == 0;
+
+    public boolean shouldCaptureStones(int[][] gameBoard, int selectedPit, int playerIndex) {
+        int lastStoneIndex = gameBoard[playerIndex][selectedPit] + selectedPit;
+        int pitsStoneCanTraverse = (gameBoard.length * (gameBoard[0].length - 1)) + 1;
+        return lastStoneIndex % pitsStoneCanTraverse < (gameBoard[0].length - 1)
+                && gameBoard[playerIndex][lastStoneIndex % pitsStoneCanTraverse] == 0;
     }
 
     @Override

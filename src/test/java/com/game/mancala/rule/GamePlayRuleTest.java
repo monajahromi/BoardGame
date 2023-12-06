@@ -116,4 +116,30 @@ public class GamePlayRuleTest {
     }
 
 
+    @ParameterizedTest
+    @MethodSource("provideShouldCaptureStones")
+    public void testShouldCaptureStones(int[][] gameBoard, int selectedPit, int playerIndex, boolean expectedResult) {
+//        (int[][] gameBoard, int selectedPit ,int playerIndex)
+        assertEquals(expectedResult, playRule.shouldCaptureStones(gameBoard, selectedPit, playerIndex));
+    }
+
+
+    static Stream<Arguments> provideShouldCaptureStones() {
+
+        int[][] gameBoard = {{0, 3, 3, 3, 5, 0, 0}, {0, 2, 3, 4, 5, 8, 7}};
+
+        return Stream.of(Arguments.of(gameBoard, 1, 0, false),
+                Arguments.of(gameBoard, 2, 0, true),
+                Arguments.of(gameBoard, 5, 1, true),
+                Arguments.of(gameBoard, 1, 1, false),
+                Arguments.of(gameBoard, 2, 1, false),
+                Arguments.of(gameBoard, 3, 1, false)
+
+        );
+
+
+    }
+
+
 }
+
