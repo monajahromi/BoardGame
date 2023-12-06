@@ -20,10 +20,8 @@ public class MancalaGamePlayRule implements GamePlayRule {
 
         int[][] updatedGameBoard = performMove(game, selectedPit);
         if (shouldCaptureStones(game.getGameMatrix(), selectedPit, game.getActivePlayerIndex())) {
-            int lastStoneIndex = getStonesCount(game, selectedPit) + selectedPit;
-            int pitsStoneCanTraverse = calculateTotalPitsExcludingBigPits(game) + 1;
-            int captureIndex = lastStoneIndex % pitsStoneCanTraverse;
-            updatedGameBoard = capturingStones(updatedGameBoard, captureIndex, game.getActivePlayerIndex());
+             int captureIndex = calculateCaptureIndex(game, selectedPit);
+          updatedGameBoard = capturingStones(updatedGameBoard, captureIndex, game.getActivePlayerIndex());
 
         }
 
@@ -59,7 +57,11 @@ public class MancalaGamePlayRule implements GamePlayRule {
             throw new IllegalArgumentException("Invalid move. Please select a valid spot on the board.");
         }
     }
-
+    private int calculateCaptureIndex(GameEntity game, int selectedPit) {
+        int lastStoneIndex = getStonesCount(game, selectedPit) + selectedPit;
+        int pitsStoneCanTraverse = calculateTotalPitsExcludingBigPits(game) + 1;
+        return lastStoneIndex % pitsStoneCanTraverse;
+    }
 
     public int[][] capturingStones(int[][] board, int captureIndex, int playerIndex) {
         int[][] updatedGame = deepCopyGameBoard(board);
