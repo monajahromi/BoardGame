@@ -38,7 +38,7 @@ public class MancalaGamePlayRule implements GamePlayRule {
 
         if (hasGameEnded(updatedGameBoard)) {
             game.setStatus(GameStatus.FINISHED);
-            onGameEnd(updatedGameBoard);
+            updatedGameBoard = onGameEnd(updatedGameBoard);
             game.setWinnerPlayerIndex(findWinningPlayer(updatedGameBoard));
         }
         game.setGameMatrix(updatedGameBoard);
@@ -86,11 +86,7 @@ public class MancalaGamePlayRule implements GamePlayRule {
         return updatedGame;
     }
 
-    public int[][] deepCopyGameBoard(int[][] original) {
-        return Arrays.stream(original)
-                .map(int[]::clone)
-                .toArray(int[][]::new);
-    }
+
 
     @Override
     public void toggleTurn(GameEntity game, int selectedPit) {
@@ -143,18 +139,22 @@ public class MancalaGamePlayRule implements GamePlayRule {
     @Override
     public boolean hasGameEnded(int[][] gameBoard) {
         return Arrays.stream(gameBoard)
-                .anyMatch(pits -> IntStream.range(0, pits.length - 1).allMatch(item -> pits[item] == 0));
+                .anyMatch(pits -> IntStream.range(0, pits.length - 1)
+                        .allMatch(item -> pits[item] == 0));
 
     }
 
     @Override
-    public void onGameEnd(int[][] gameBoard) {
-        Arrays.stream(gameBoard).forEach(row -> {
+    public int[][] onGameEnd(int[][] gameBoard) {
+        var updatedBoard = deepCopyGameBoard(gameBoard);
+
+        Arrays.stream(updatedBoard).forEach(row -> {
             row[row.length - 1] = Arrays.stream(row).reduce(0, (a, b) -> a + b);
             for (int index = 0; index < row.length - 1; index++) {
                 row[index] = 0;
             }
         });
+        return updatedBoard;
     }
 
     @Override
@@ -166,6 +166,11 @@ public class MancalaGamePlayRule implements GamePlayRule {
                 .getAsInt();
 
 
+    }
+    public int[][] deepCopyGameBoard(int[][] original) {
+        return Arrays.stream(original)
+                .map(int[]::clone)
+                .toArray(int[][]::new);
     }
 
 }

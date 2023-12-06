@@ -17,7 +17,7 @@ public interface GamePlayRule {
 
     boolean hasGameEnded(int[][] gameBoard);
 
-    void onGameEnd(int[][] gameBoard);
+    int[][] onGameEnd(int[][] gameBoard);
 
     int findWinningPlayer(int[][] gameBoard);
 

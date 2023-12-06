@@ -153,10 +153,54 @@ public class GamePlayRuleTest {
                 Arguments.of(baseBoard, 4, 1, afterCapturingIndexFourPlayerOne),
                 Arguments.of(baseBoard, 5, 1, afterCapturingIndexFivePlayerOne)
         );
-
-
     }
 
+    @ParameterizedTest
+    @MethodSource("hasGameEnded_data")
+    void testHasGameEnded(int[][] gameBoard, boolean expectedResult) {
+        assertEquals(expectedResult, playRule.hasGameEnded(gameBoard));
+    }
+
+    static Stream<Arguments> hasGameEnded_data() {
+
+        var endedBoard_case_one = new int[][]{{0, 0, 0, 0, 0, 0, 4}, {1, 2, 3, 4, 3, 8, 7}};
+        var notEndedBoard = new int[][]{{1, 0, 0, 0, 0, 0, 4}, {1, 2, 3, 4, 3, 8, 7}};
+        var endedBoard_case_two = new int[][]{{1, 0, 0, 3, 1, 0, 4}, {0, 0, 0, 0, 0, 0, 7}};
+
+        return Stream.of(Arguments.of(endedBoard_case_one, true),
+                Arguments.of(notEndedBoard, false),
+                Arguments.of(endedBoard_case_two, true)
+        );
+    }
+
+
+    @ParameterizedTest
+    @MethodSource("onGameEnd_data")
+    void testOnGameEnd(int[][] gameBoard, int[][] expectedResult) {
+        assertArrayEquals(expectedResult, playRule.onGameEnd(gameBoard));
+    }
+
+    static Stream<Arguments> onGameEnd_data() {
+
+        var gameBoard = new int[][]{{5, 0, 1, 6, 2, 0, 4}, {1, 2, 3, 4, 3, 8, 7}};
+        var collect_gameBoard_to_bigPit = new int[][]{{0, 0, 0, 0, 0, 0, 18}, {0, 0, 0, 0, 0, 0, 28}};
+
+        return Stream.of(Arguments.of(gameBoard, collect_gameBoard_to_bigPit));
+    }
+
+    @ParameterizedTest
+    @MethodSource("findWinningPlayer_data")
+    void testFindWinningPlayer(int[][] gameBoard, int expectedResult) {
+        assertEquals(expectedResult, playRule.findWinningPlayer(gameBoard));
+    }
+    static Stream<Arguments> findWinningPlayer_data() {
+
+        var gameBoard_winner_playerOne = new int[][]{{0, 0, 1, 0, 6, 0, 4}, {1, 2, 3, 4, 3, 8, 7}};
+        var gameBoard_winner_playerZero = new int[][]{{0, 0, 1, 0, 6, 0, 14}, {1, 2, 3, 4, 3, 8, 7}};
+
+        return Stream.of(Arguments.of(gameBoard_winner_playerOne, 1),
+                Arguments.of(gameBoard_winner_playerZero, 0));
+    }
 
 }
 
