@@ -14,15 +14,9 @@ public class MancalaGamePlayRule implements GamePlayRule {
 
     @Override
     public GameEntity play(GameEntity game, String playerName, int selectedPit) {
-        if (!isPlayableGame(game)) {
-            throw new IllegalArgumentException("The game is not in a playable state. Make sure the game is in progress.");
-        }
-        if (!validatePlayerTurn(game, playerName)) {
-            throw new IllegalArgumentException("It's not " + playerName + "'s turn to play.");
-        }
-        if (!isMoveValid(game, selectedPit)) {
-            throw new IllegalArgumentException("Invalid move. Please select a valid spot on the board.");
-        }
+        validatePlayableGame(game);
+        validatePlayerTurn(game, playerName);
+        validateMove(game, selectedPit);
 
         int[][] updatedGameBoard = performMove(game, selectedPit);
         if (shouldCaptureStones(game.getGameMatrix(), selectedPit, game.getActivePlayerIndex())) {
@@ -47,6 +41,25 @@ public class MancalaGamePlayRule implements GamePlayRule {
 
 
     }
+    public void validatePlayableGame(GameEntity game) {
+        if (!game.getStatus().equals(GameStatus.PLAYING)) {
+            throw new IllegalArgumentException("The game is not in a playable state. Make sure the game is in progress.");
+        }
+    }
+
+    public void validatePlayerTurn(GameEntity game, String inputPlayerName) {
+        if (!game.getPlayers().get(game.getActivePlayerIndex()).getName().equals(inputPlayerName)) {
+            throw new IllegalArgumentException("It's not " + inputPlayerName + "'s turn to play.");
+        }
+    }
+    @Override
+    public void validateMove(GameEntity game, int selectedPit) {
+        if (selectedPit > playerPitsExcludingBigPits(game)
+                || game.getGameMatrix()[game.getActivePlayerIndex()][selectedPit] <= 0) {
+            throw new IllegalArgumentException("Invalid move. Please select a valid spot on the board.");
+        }
+    }
+
 
     public int[][] capturingStones(int[][] board, int captureIndex, int playerIndex) {
         int[][] updatedGame = deepCopyGameBoard(board);
@@ -118,25 +131,6 @@ public class MancalaGamePlayRule implements GamePlayRule {
     private int playersCount(GameEntity game) {
         return game.getGameMatrix().length;
     }
-
-
-    @Override
-    public boolean validatePlayerTurn(GameEntity game, String inputPlayerName) {
-        return game.getPlayers()
-                .get(game.getActivePlayerIndex())
-                .getName()
-                .equals(inputPlayerName);
-    }
-
-    @Override
-    public boolean isMoveValid(GameEntity game, int selectedPit) {
-        if (selectedPit > playerPitsExcludingBigPits(game)) {
-            return false;
-        }
-        return game.getGameMatrix()[game.getActivePlayerIndex()][selectedPit] > 0;
-    }
-
-
     @Override
     public boolean hasGameEnded(int[][] gameBoard) {
         return Arrays.stream(gameBoard)

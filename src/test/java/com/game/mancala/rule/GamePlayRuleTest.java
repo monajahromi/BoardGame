@@ -19,19 +19,10 @@ import static org.junit.jupiter.api.Assertions.*;
 public class GamePlayRuleTest {
 
     static MancalaGamePlayRule playRule;
-    static GameEntity game;
 
     @BeforeAll
     static void setUp() {
         playRule = new MancalaGamePlayRule();
-        game = new GameEntity();
-    }
-
-    @ParameterizedTest
-    @EnumSource(value = GameStatus.class, names = {"FINISHED", "CANCELED"})
-    void isPlayableGame_GameInFinishedOrPausedState_ReturnsFalse(GameStatus status) {
-        game.setStatus(status);
-        assertFalse(playRule.isPlayableGame(game));
     }
 
     @ParameterizedTest
@@ -45,9 +36,7 @@ public class GamePlayRuleTest {
         assertEquals(expectedResult.getId(), actualResult.getId());
     }
 
-
     public static Stream<Arguments> play_data() {
-
 
         int[][] board_case_one = {{1, 2, 3, 3, 5, 6, 7}, {1, 2, 3, 4, 5, 6, 7}};
         GameEntity game_board_case_one = GameEntity.builder()
@@ -91,7 +80,6 @@ public class GamePlayRuleTest {
                 Arguments.of(game_board_case_one, "mona", 3, played_game_board_case_one),
                 Arguments.of(game_board_case_two, "mona", 1, played_game_board_case_two)
         );
-
 
 
     }
