@@ -4,17 +4,13 @@ import com.game.mancala.model.entity.GameEntity;
 import com.game.mancala.rule.mancala.MancalaGamePlayRule;
 import com.game.mancala.utils.GameStatus;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -117,17 +113,15 @@ public class GamePlayRuleTest {
 
 
     @ParameterizedTest
-    @MethodSource("provideShouldCaptureStones")
+    @MethodSource("shouldCaptureStones_data")
     public void testShouldCaptureStones(int[][] gameBoard, int selectedPit, int playerIndex, boolean expectedResult) {
-//        (int[][] gameBoard, int selectedPit ,int playerIndex)
         assertEquals(expectedResult, playRule.shouldCaptureStones(gameBoard, selectedPit, playerIndex));
     }
 
 
-    static Stream<Arguments> provideShouldCaptureStones() {
+    static Stream<Arguments> shouldCaptureStones_data() {
 
         int[][] gameBoard = {{0, 3, 3, 3, 5, 0, 0}, {0, 2, 3, 4, 5, 8, 7}};
-
         return Stream.of(Arguments.of(gameBoard, 1, 0, false),
                 Arguments.of(gameBoard, 2, 0, true),
                 Arguments.of(gameBoard, 5, 1, true),
@@ -135,6 +129,29 @@ public class GamePlayRuleTest {
                 Arguments.of(gameBoard, 2, 1, false),
                 Arguments.of(gameBoard, 3, 1, false)
 
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("captureStones_data")
+    void testCapturingStones(int[][] gameBoard, int captureIndex, int playerIndex, int[][] expectedResult) {
+        assertArrayEquals(expectedResult, playRule.capturingStones(gameBoard, captureIndex, playerIndex));
+    }
+
+    static Stream<Arguments> captureStones_data() {
+
+        var baseBoard = new int[][]{{2, 3, 1, 9, 5, 0, 4}, {1, 2, 3, 4, 3, 8, 7}};
+
+        var afterCapturingIndexZeroPlayerZero =
+                new int[][]{{0, 3, 1, 9, 5, 0, 7}, {0, 2, 3, 4, 3, 8, 7}};
+        var afterCapturingIndexFourPlayerOne =
+                new int[][]{{2, 3, 1, 9, 0, 0, 4}, {1, 2, 3, 4, 0, 8, 15}};
+        var afterCapturingIndexFivePlayerOne =
+                new int[][]{{2, 3, 1, 9, 5, 0, 4}, {1, 2, 3, 4, 3, 0, 15}};
+
+        return Stream.of(Arguments.of(baseBoard, 0, 0, afterCapturingIndexZeroPlayerZero),
+                Arguments.of(baseBoard, 4, 1, afterCapturingIndexFourPlayerOne),
+                Arguments.of(baseBoard, 5, 1, afterCapturingIndexFivePlayerOne)
         );
 
 

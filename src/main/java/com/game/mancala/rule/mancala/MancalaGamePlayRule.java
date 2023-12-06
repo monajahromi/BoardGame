@@ -29,7 +29,7 @@ public class MancalaGamePlayRule implements GamePlayRule {
             int lastStoneIndex = getStonesCount(game, selectedPit) + selectedPit;
             int pitsStoneCanTraverse = calculateTotalPitsExcludingBigPits(game) + 1;
             int captureIndex = lastStoneIndex % pitsStoneCanTraverse;
-            capturingStones(updatedGameBoard, captureIndex, game.getActivePlayerIndex());
+            updatedGameBoard = capturingStones(updatedGameBoard, captureIndex, game.getActivePlayerIndex());
 
         }
 
@@ -48,16 +48,17 @@ public class MancalaGamePlayRule implements GamePlayRule {
 
     }
 
-    public void capturingStones(int[][] board, int captureIndex, int playerIndex) {
+    public int[][] capturingStones(int[][] board, int captureIndex, int playerIndex) {
+        int[][] updatedGame = deepCopyGameBoard(board);
         int capturingStonesCount = Arrays.stream(board)
                 .mapToInt(row -> row[captureIndex])
                 .sum();
 
-        board[captureIndex][board[0].length - 1] += capturingStonesCount;
+        updatedGame[playerIndex][board[0].length - 1] += capturingStonesCount;
 
-        Arrays.stream(board)
+        Arrays.stream(updatedGame)
                 .forEach(row -> row[captureIndex] = 0);
-
+        return updatedGame;
     }
 
     public boolean shouldCaptureStones(int[][] gameBoard, int selectedPit, int playerIndex) {
