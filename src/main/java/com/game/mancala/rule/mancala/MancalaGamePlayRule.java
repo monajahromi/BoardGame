@@ -28,7 +28,7 @@ public class MancalaGamePlayRule implements GamePlayRule {
         if (shouldToggleTurn(game.getGameMatrix(), selectedPit,game.getActivePlayerIndex()))
             toggleTurn(game, selectedPit);
 
-        if (hasGameEnded(updatedGameBoard)) {
+        if (shouldGameEnd(updatedGameBoard)) {
             game.setStatus(GameStatus.FINISHED);
             updatedGameBoard = onGameEnd(updatedGameBoard);
             game.setWinnerPlayerIndex(findWinningPlayer(updatedGameBoard));
@@ -134,7 +134,7 @@ public class MancalaGamePlayRule implements GamePlayRule {
         return game.getGameMatrix().length;
     }
     @Override
-    public boolean hasGameEnded(int[][] gameBoard) {
+    public boolean shouldGameEnd(int[][] gameBoard) {
         return Arrays.stream(gameBoard)
                 .anyMatch(pits -> IntStream.range(0, pits.length - 1)
                         .allMatch(item -> pits[item] == 0));

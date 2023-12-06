@@ -16,7 +16,7 @@ public interface GamePlayRule {
 
     void toggleTurn(GameEntity game, int selectedRow);
 
-    boolean hasGameEnded(int[][] gameBoard);
+    boolean shouldGameEnd(int[][] gameBoard);
 
     int[][] onGameEnd(int[][] gameBoard);
 

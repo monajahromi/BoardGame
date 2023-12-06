@@ -7,7 +7,6 @@ import com.game.mancala.utils.GameStatus;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
@@ -190,12 +189,12 @@ public class GamePlayRuleTest {
     }
 
     @ParameterizedTest
-    @MethodSource("hasGameEnded_data")
-    void testHasGameEnded(int[][] gameBoard, boolean expectedResult) {
-        assertEquals(expectedResult, playRule.hasGameEnded(gameBoard));
+    @MethodSource("shouldGameEnd_data")
+    void testShouldGameEnd(int[][] gameBoard, boolean expectedResult) {
+        assertEquals(expectedResult, playRule.shouldGameEnd(gameBoard));
     }
 
-    static Stream<Arguments> hasGameEnded_data() {
+    static Stream<Arguments> shouldGameEnd_data() {
 
         var endedBoard_case_one = new int[][]{{0, 0, 0, 0, 0, 0, 4}, {1, 2, 3, 4, 3, 8, 7}};
         var notEndedBoard = new int[][]{{1, 0, 0, 0, 0, 0, 4}, {1, 2, 3, 4, 3, 8, 7}};
