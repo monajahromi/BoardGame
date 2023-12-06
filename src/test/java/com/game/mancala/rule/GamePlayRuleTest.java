@@ -77,4 +77,43 @@ public class GamePlayRuleTest {
     }
 
 
+    @ParameterizedTest
+    @MethodSource("provideGameEntitiesForMove")
+    void testPerformMove(GameEntity initialGame, int selectedPit, int[][] expectedBoard) {
+        GameEntity result = playRule.performMove(initialGame, selectedPit);
+        assertArrayEquals(expectedBoard, result.getGameMatrix());
+    }
+
+    static Stream<Arguments> provideGameEntitiesForMove() {
+
+        int[][] afterMoving_indexZero = {{0, 3, 3, 3, 5, 6, 7}, {1, 2, 3, 4, 5, 6, 7}};
+        int[][] afterMoving_indexOne = {{1, 0, 4, 4, 5, 6, 7}, {1, 2, 3, 4, 5, 6, 7}};
+        int[][] afterMoving_indexTwo = {{1, 2, 0, 4, 6, 7, 7}, {1, 2, 3, 4, 5, 6, 7}};
+        int[][] afterMoving_indexTree = {{1, 2, 3, 0, 6, 7, 8}, {1, 2, 3, 4, 5, 6, 7}};
+        int[][] afterMoving_indexFour = {{1, 2, 3, 3, 0, 7, 8}, {1, 2, 3, 5, 6, 7, 7}};
+        int[][] afterMoving_indexFive = {{1, 2, 3, 3, 5, 0, 8}, {1, 3, 4, 5, 6, 7, 7}};
+
+        return Stream.of(Arguments.of(buildGameEntity(new int[][]{{1, 2, 3, 3, 5, 6, 7}, {1, 2, 3, 4, 5, 6, 7}}), 0, afterMoving_indexZero),
+                Arguments.of(buildGameEntity(new int[][]{{1, 2, 3, 3, 5, 6, 7}, {1, 2, 3, 4, 5, 6, 7}}), 1, afterMoving_indexOne),
+                Arguments.of(buildGameEntity(new int[][]{{1, 2, 3, 3, 5, 6, 7}, {1, 2, 3, 4, 5, 6, 7}}), 2, afterMoving_indexTwo),
+                Arguments.of(buildGameEntity(new int[][]{{1, 2, 3, 3, 5, 6, 7}, {1, 2, 3, 4, 5, 6, 7}}), 3, afterMoving_indexTree),
+                Arguments.of(buildGameEntity(new int[][]{{1, 2, 3, 3, 5, 6, 7}, {1, 2, 3, 4, 5, 6, 7}}), 4, afterMoving_indexFour),
+                Arguments.of(buildGameEntity(new int[][]{{1, 2, 3, 3, 5, 6, 7}, {1, 2, 3, 4, 5, 6, 7}}), 5, afterMoving_indexFive))
+                ;
+
+    }
+
+    private static GameEntity buildGameEntity(int[][] gameMatrix) {
+        return GameEntity.builder()
+                .gameMatrix(new int[][]{{1, 2, 3, 3, 5, 6, 7}, {1, 2, 3, 4, 5, 6, 7}})
+                .activePlayerIndex(0)
+                .build();
+    }
+
+
+    private void printMatrix(int[][] matrix) {
+        Arrays.stream(matrix).forEach(item -> System.out.println(Arrays.toString(item)));
+    }
+
+
 }
