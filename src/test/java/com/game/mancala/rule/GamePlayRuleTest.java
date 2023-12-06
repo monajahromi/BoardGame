@@ -1,16 +1,17 @@
 package com.game.mancala.rule;
 
 import com.game.mancala.model.entity.GameEntity;
+import com.game.mancala.model.entity.Player;
 import com.game.mancala.rule.mancala.MancalaGamePlayRule;
 import com.game.mancala.utils.GameStatus;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,53 +35,76 @@ public class GamePlayRuleTest {
     }
 
     @ParameterizedTest
-    @MethodSource("provideGameEntities")
-    public void testToggleTurnConditionMet(GameEntity game, int selectedPit, boolean expectedResult) {
-
-        Arrays.stream(game.getGameMatrix()).forEach(item -> System.out.println(Arrays.toString(item)));
-        System.out.println("selected Pit : " + selectedPit);
-        System.out.println("expectedResult : " + expectedResult);
-        System.out.println(playRule.isToggleTurnConditionMet(game, selectedPit));
-        assertEquals(expectedResult, playRule.isToggleTurnConditionMet(game, selectedPit));
+    @MethodSource("play_data")
+    public void testPlay(GameEntity game, String playerName, int selectedPit, GameEntity expectedResult) {
+        GameEntity actualResult = playRule.play(game, playerName, selectedPit);
+        assertEquals(expectedResult.getActivePlayerIndex(), actualResult.getActivePlayerIndex());
+        assertEquals(expectedResult.getWinnerPlayerIndex(), actualResult.getWinnerPlayerIndex());
+        assertArrayEquals(expectedResult.getGameMatrix(), actualResult.getGameMatrix());
+        assertEquals(expectedResult.getStatus().toString(), actualResult.getStatus().toString());
+        assertEquals(expectedResult.getId(), actualResult.getId());
     }
 
 
-    public static Stream<Arguments> provideGameEntities() {
+    public static Stream<Arguments> play_data() {
 
 
-        int[][] gameBoardA = {{1, 2, 3, 3, 5, 6, 7}, {1, 2, 3, 4, 5, 6, 7}};
-        GameEntity game_needsSwitchTurn_firstPlayer_atAnySelectedPit = GameEntity.builder()
-                .gameMatrix(gameBoardA)
+        int[][] board_case_one = {{1, 2, 3, 3, 5, 6, 7}, {1, 2, 3, 4, 5, 6, 7}};
+        GameEntity game_board_case_one = GameEntity.builder()
+                .gameMatrix(board_case_one)
+                .players(List.of(Player.builder().name("mona").build(),
+                        Player.builder().name("hana").build()))
                 .activePlayerIndex(0)
+                .status(GameStatus.PLAYING)
                 .build();
 
-        int[][] gameBoardB = {{1, 2, 3, 1, 5, 6, 7}, {1, 5, 3, 4, 2, 6, 7}};
-        GameEntity game_DoNOTNeedsSwitchTurn_secondPlayer_AtIndexOneAndForth = GameEntity.builder()
-                .gameMatrix(gameBoardB)
+        int[][] played_board_case_one = {{1, 2, 3, 0, 6, 7, 8}, {1, 2, 3, 4, 5, 6, 7}};
+        GameEntity played_game_board_case_one = GameEntity.builder()
+                .gameMatrix(played_board_case_one)
+                .players(List.of(Player.builder().name("mona").build(),
+                        Player.builder().name("hana").build()))
+                .activePlayerIndex(0)
+                .status(GameStatus.PLAYING)
+                .build();
+
+
+        int[][] board_case_two = {{0, 1, 0, 0, 0, 0, 7}, {1, 2, 3, 4, 5, 6, 7}};
+        GameEntity game_board_case_two = GameEntity.builder()
+                .gameMatrix(board_case_two)
+                .players(List.of(Player.builder().name("mona").build(),
+                        Player.builder().name("hana").build()))
+                .activePlayerIndex(0)
+                .status(GameStatus.PLAYING)
+                .build();
+
+        int[][] played_board_case_two = {{0, 0, 0, 0, 0, 0, 11}, {0, 0, 0, 0, 0, 0, 25}};
+        GameEntity played_game_board_case_two = GameEntity.builder()
+                .gameMatrix(played_board_case_two)
+                .players(List.of(Player.builder().name("mona").build(),
+                        Player.builder().name("hana").build()))
                 .activePlayerIndex(1)
+                .winnerPlayerIndex(1)
+                .status(GameStatus.FINISHED)
                 .build();
 
-        return Stream.of(Arguments.of(game_needsSwitchTurn_firstPlayer_atAnySelectedPit, 0, true),
-                Arguments.of(game_needsSwitchTurn_firstPlayer_atAnySelectedPit, 1, true),
-                Arguments.of(game_needsSwitchTurn_firstPlayer_atAnySelectedPit, 2, true),
-                Arguments.of(game_needsSwitchTurn_firstPlayer_atAnySelectedPit, 3, true),
-                Arguments.of(game_needsSwitchTurn_firstPlayer_atAnySelectedPit, 4, true),
-                Arguments.of(game_needsSwitchTurn_firstPlayer_atAnySelectedPit, 5, true),
-                Arguments.of(game_DoNOTNeedsSwitchTurn_secondPlayer_AtIndexOneAndForth, 1, false),
-                Arguments.of(game_DoNOTNeedsSwitchTurn_secondPlayer_AtIndexOneAndForth, 4, false));
+        return Stream.of(
+                Arguments.of(game_board_case_one, "mona", 3, played_game_board_case_one),
+                Arguments.of(game_board_case_two, "mona", 1, played_game_board_case_two)
+        );
+
 
 
     }
 
 
     @ParameterizedTest
-    @MethodSource("provideGameEntitiesForMove")
+    @MethodSource("performMove_data")
     void testPerformMove(GameEntity initialGame, int selectedPit, int[][] expectedBoard) {
         int[][] result = playRule.performMove(initialGame, selectedPit);
         assertArrayEquals(expectedBoard, result);
     }
 
-    static Stream<Arguments> provideGameEntitiesForMove() {
+    static Stream<Arguments> performMove_data() {
 
         int[][] afterMoving_indexZero = {{0, 3, 3, 3, 5, 6, 7}, {1, 2, 3, 4, 5, 6, 7}};
         int[][] afterMoving_indexOne = {{1, 0, 4, 4, 5, 6, 7}, {1, 2, 3, 4, 5, 6, 7}};
@@ -89,17 +113,17 @@ public class GamePlayRuleTest {
         int[][] afterMoving_indexFour = {{1, 2, 3, 3, 0, 7, 8}, {1, 2, 3, 5, 6, 7, 7}};
         int[][] afterMoving_indexFive = {{1, 2, 3, 3, 5, 0, 8}, {1, 3, 4, 5, 6, 7, 7}};
 
-        return Stream.of(Arguments.of(buildGameEntity(new int[][]{{1, 2, 3, 3, 5, 6, 7}, {1, 2, 3, 4, 5, 6, 7}}), 0, afterMoving_indexZero),
-                Arguments.of(buildGameEntity(new int[][]{{1, 2, 3, 3, 5, 6, 7}, {1, 2, 3, 4, 5, 6, 7}}), 1, afterMoving_indexOne),
-                Arguments.of(buildGameEntity(new int[][]{{1, 2, 3, 3, 5, 6, 7}, {1, 2, 3, 4, 5, 6, 7}}), 2, afterMoving_indexTwo),
-                Arguments.of(buildGameEntity(new int[][]{{1, 2, 3, 3, 5, 6, 7}, {1, 2, 3, 4, 5, 6, 7}}), 3, afterMoving_indexTree),
-                Arguments.of(buildGameEntity(new int[][]{{1, 2, 3, 3, 5, 6, 7}, {1, 2, 3, 4, 5, 6, 7}}), 4, afterMoving_indexFour),
-                Arguments.of(buildGameEntity(new int[][]{{1, 2, 3, 3, 5, 6, 7}, {1, 2, 3, 4, 5, 6, 7}}), 5, afterMoving_indexFive))
+        return Stream.of(Arguments.of(performMove_dataEntity(new int[][]{{1, 2, 3, 3, 5, 6, 7}, {1, 2, 3, 4, 5, 6, 7}}), 0, afterMoving_indexZero),
+                Arguments.of(performMove_dataEntity(new int[][]{{1, 2, 3, 3, 5, 6, 7}, {1, 2, 3, 4, 5, 6, 7}}), 1, afterMoving_indexOne),
+                Arguments.of(performMove_dataEntity(new int[][]{{1, 2, 3, 3, 5, 6, 7}, {1, 2, 3, 4, 5, 6, 7}}), 2, afterMoving_indexTwo),
+                Arguments.of(performMove_dataEntity(new int[][]{{1, 2, 3, 3, 5, 6, 7}, {1, 2, 3, 4, 5, 6, 7}}), 3, afterMoving_indexTree),
+                Arguments.of(performMove_dataEntity(new int[][]{{1, 2, 3, 3, 5, 6, 7}, {1, 2, 3, 4, 5, 6, 7}}), 4, afterMoving_indexFour),
+                Arguments.of(performMove_dataEntity(new int[][]{{1, 2, 3, 3, 5, 6, 7}, {1, 2, 3, 4, 5, 6, 7}}), 5, afterMoving_indexFive))
                 ;
 
     }
 
-    private static GameEntity buildGameEntity(int[][] gameMatrix) {
+    private static GameEntity performMove_dataEntity(int[][] gameMatrix) {
         return GameEntity.builder()
                 .gameMatrix(new int[][]{{1, 2, 3, 3, 5, 6, 7}, {1, 2, 3, 4, 5, 6, 7}})
                 .activePlayerIndex(0)
@@ -109,6 +133,28 @@ public class GamePlayRuleTest {
 
     private void printMatrix(int[][] matrix) {
         Arrays.stream(matrix).forEach(item -> System.out.println(Arrays.toString(item)));
+    }
+
+    @ParameterizedTest
+    @MethodSource("shouldToggleTurn_data")
+    public void testShouldToggleTurn(int[][] gameBoard, int selectedPit, int playerIndex, boolean expectedResult) {
+        assertEquals(expectedResult, playRule.shouldToggleTurn(gameBoard, selectedPit, playerIndex));
+    }
+
+    static Stream<Arguments> shouldToggleTurn_data() {
+
+        int[][] needToggle_AnyIndex_PlayerIndexZero = {{1, 2, 3, 4, 5, 6, 7}, {1, 2, 3, 4, 5, 6, 7}};
+        int[][] NoToggle_IndexOneAndFour_playerIndexOne = {{1, 2, 3, 1, 5, 6, 7}, {1, 5, 3, 4, 2, 6, 7}};
+        return Stream.of(
+                Arguments.of(needToggle_AnyIndex_PlayerIndexZero, 0, 0, true),
+                Arguments.of(needToggle_AnyIndex_PlayerIndexZero, 1, 0, true),
+                Arguments.of(needToggle_AnyIndex_PlayerIndexZero, 2, 0, true),
+                Arguments.of(needToggle_AnyIndex_PlayerIndexZero, 3, 0, true),
+                Arguments.of(needToggle_AnyIndex_PlayerIndexZero, 4, 0, true),
+                Arguments.of(needToggle_AnyIndex_PlayerIndexZero, 5, 0, true),
+                Arguments.of(NoToggle_IndexOneAndFour_playerIndexOne, 1, 1, false),
+                Arguments.of(NoToggle_IndexOneAndFour_playerIndexOne, 4, 1, false)
+        );
     }
 
 
@@ -193,6 +239,7 @@ public class GamePlayRuleTest {
     void testFindWinningPlayer(int[][] gameBoard, int expectedResult) {
         assertEquals(expectedResult, playRule.findWinningPlayer(gameBoard));
     }
+
     static Stream<Arguments> findWinningPlayer_data() {
 
         var gameBoard_winner_playerOne = new int[][]{{0, 0, 1, 0, 6, 0, 4}, {1, 2, 3, 4, 3, 8, 7}};

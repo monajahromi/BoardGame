@@ -33,7 +33,7 @@ public class MancalaGamePlayRule implements GamePlayRule {
 
         }
 
-        if (isToggleTurnConditionMet(game, selectedPit))
+        if (shouldToggleTurn(game.getGameMatrix(), selectedPit,game.getActivePlayerIndex()))
             toggleTurn(game, selectedPit);
 
         if (hasGameEnded(updatedGameBoard)) {
@@ -87,18 +87,18 @@ public class MancalaGamePlayRule implements GamePlayRule {
     }
 
 
-
     @Override
     public void toggleTurn(GameEntity game, int selectedPit) {
         game.setActivePlayerIndex((game.getActivePlayerIndex() + 1) % 2);
     }
 
-    public boolean isToggleTurnConditionMet(GameEntity game, int selectedPit) {
+    public boolean shouldToggleTurn(int[][] gameBoard, int selectedPit, int playerIndex) {
         // The condition for a turn switch is met if the remainder of dividing stoneCounts
         // by the total number of pits a stone can traverse in one cycle
-        int distanceToBigPit = playerPitsExcludingBigPits(game) - selectedPit;
-        return getStonesCount(game, selectedPit) % (calculateTotalPitsExcludingBigPits(game) + 1)
-                != distanceToBigPit;
+        int rowNum = gameBoard.length;
+        int colNum = gameBoard[0].length - 1;
+        int distanceToBigPit = colNum - selectedPit;
+        return gameBoard[playerIndex][selectedPit] % (rowNum * colNum + 1) != distanceToBigPit;
     }
 
     // Calculate the total number of pits in the ground, excluding big pits
@@ -111,6 +111,7 @@ public class MancalaGamePlayRule implements GamePlayRule {
     }
 
     private int playerPitsExcludingBigPits(GameEntity game) {
+
         return game.getGameMatrix()[0].length - 1;
     }
 
@@ -167,6 +168,7 @@ public class MancalaGamePlayRule implements GamePlayRule {
 
 
     }
+
     public int[][] deepCopyGameBoard(int[][] original) {
         return Arrays.stream(original)
                 .map(int[]::clone)

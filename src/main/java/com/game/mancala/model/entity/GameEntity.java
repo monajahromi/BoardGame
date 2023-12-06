@@ -1,14 +1,14 @@
 package com.game.mancala.model.entity;
 
-import jakarta.persistence.*;
 import com.game.mancala.utils.GameStatus;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 
 @NoArgsConstructor
@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "game")
 @Builder
+@EqualsAndHashCode
 public class GameEntity {
 
     @Id
@@ -29,7 +30,7 @@ public class GameEntity {
     private GameStatus status;
 
     @JdbcTypeCode(SqlTypes.JSON)
-     private int[][] gameMatrix ;
+    private int[][] gameMatrix;
 
     private int activePlayerIndex;
     private int winnerPlayerIndex;

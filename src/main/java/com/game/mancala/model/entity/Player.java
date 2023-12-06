@@ -11,8 +11,10 @@ import lombok.*;
 @Builder
 @Embeddable
 @ToString
+@EqualsAndHashCode
 public class Player {
 
     private String name;
+
 
 }
