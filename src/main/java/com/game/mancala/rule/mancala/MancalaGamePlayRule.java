@@ -87,7 +87,7 @@ public class MancalaGamePlayRule implements GamePlayRule {
     public int[][] performMove(GameEntity game, int selectedPit) {
 
         List<int[]> indexesForAddingStones = MancalaIndexGenerator
-                .generateIndexes(game.getGameMatrix().length,
+                .provideMoveIndexes(game.getGameMatrix().length,
                         game.getGameMatrix()[0].length,
                         game.getActivePlayerIndex(),
                         selectedPit,

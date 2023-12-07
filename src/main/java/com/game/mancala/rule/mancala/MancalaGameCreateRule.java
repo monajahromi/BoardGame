@@ -39,18 +39,18 @@ public class MancalaGameCreateRule implements GameCreateRule {
 
         GameEntity game = new GameEntity();
         game.setPlayers(players);
-        game.setName("Mancala");
+        game.setName(config.getGame_name());
         game.setStatus(GameStatus.PLAYING);
-        game.setGameMatrix(matrixGenerator(pitsCount, stonesPerPit));
+        game.setGameMatrix(matrixGenerator(pitsCount, stonesPerPit,dto.getPlayerNames().length));
 
         return game;
     }
-    public static int[][] matrixGenerator(int pitCount, int stonesPerPit) {
+    public static int[][] matrixGenerator(int pitCount, int stonesPerPit, int playersCount) {
         // Create a 2D array with 2 rows and pitCount + 1 columns
-        int[][] pitArray = new int[2][pitCount + 1];
+        int[][] pitArray = new int[playersCount][pitCount + 1];
 
         // Initialize values in each row
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < playersCount; i++) {
             for (int j = 0; j < pitCount; j++) {
                 pitArray[i][j] = stonesPerPit;
             }

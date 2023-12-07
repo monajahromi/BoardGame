@@ -1,7 +1,6 @@
 package com.game.mancala.rule.mancala;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -10,9 +9,9 @@ public class MancalaIndexGenerator {
 
 
     // Generates indexes based on the provided parameters.
-    public static List<int[]> generateIndexes(int rowNum, int colNum,
-                                              int selectedRow, int selectedCol,
-                                              int stoneCount) {
+    public static List<int[]> provideMoveIndexes(int rowNum, int colNum,
+                                                 int selectedRow, int selectedCol,
+                                                 int stoneCount) {
          List<int[]> indexes = new ArrayList<>();
 
         // generates indexes for first row
@@ -50,18 +49,6 @@ public class MancalaIndexGenerator {
                 .mapToObj(j -> new int[]{row, colNum - 2 - j})
                 .collect(Collectors.toList());
         return indexes;
-    }
-
-
-    public static void main(String[] args) {
-        int rowNum = 2;
-        int colNum = 7;
-        int selectedRow = 1;
-        int selectedCol = 4;
-        int stoneCount = 15;
-
-        List<int[]> result = generateIndexes(rowNum, colNum, selectedRow, selectedCol, stoneCount);
-        result.forEach(item -> System.out.println(Arrays.toString(item)));
     }
 
 

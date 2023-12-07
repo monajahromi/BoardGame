@@ -15,23 +15,26 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/mancala")
 @Validated
 public class MancalaController {
-    private final GameService gameService ;
+    private final GameService gameService;
 
     public MancalaController(GameService gameService) {
         this.gameService = gameService;
     }
 
     @PostMapping("start")
+    @CrossOrigin(origins="*")
     public ResponseEntity<GameEntity> create(@RequestBody StartDto dto) {
         return new ResponseEntity<>(gameService.create(dto), HttpStatus.CREATED);
     }
 
     @PutMapping("play")
+    @CrossOrigin(origins="*")
     public ResponseEntity<GameEntity> play(@RequestBody PlayDto dto) throws NotFoundException {
         return new ResponseEntity<>(gameService.play(dto), HttpStatus.CREATED);
     }
 
     @PutMapping("cancel")
+    @CrossOrigin(origins="*")
     public ResponseEntity<GameEntity> cancel(@RequestBody PlayDto dto) throws NotFoundException {
         return new ResponseEntity<>(gameService.cancel(dto), HttpStatus.CREATED);
     }
