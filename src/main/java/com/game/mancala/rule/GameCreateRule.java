@@ -5,6 +5,7 @@ import com.game.mancala.model.entity.GameEntity;
 
 public interface GameCreateRule {
     GameEntity setupNewGame(StartDto initialData);
+
     void setInitialPlayerTurn(GameEntity gameEntity);
 
 }

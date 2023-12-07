@@ -16,9 +16,11 @@ import java.util.List;
 @Service
 public class MancalaGameCreateRule implements GameCreateRule {
     private final MancalaConfig config;
+
     public MancalaGameCreateRule(MancalaConfig config) {
         this.config = config;
     }
+
     @Override
     public GameEntity setupNewGame(StartDto dto) {
 
@@ -39,7 +41,7 @@ public class MancalaGameCreateRule implements GameCreateRule {
         game.setPlayers(players);
         game.setName(config.getGame_name());
         game.setStatus(GameStatus.PLAYING);
-        game.setGameMatrix(MancalaIndexGenerator.initializeGameMatrix(pitsCount, stonesPerPit,dto.getPlayerNames().length));
+        game.setGameMatrix(MancalaIndexGenerator.initializeGameMatrix(pitsCount, stonesPerPit, dto.getPlayerNames().length));
 
         return game;
     }

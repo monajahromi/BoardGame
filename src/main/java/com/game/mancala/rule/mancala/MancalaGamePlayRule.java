@@ -20,12 +20,12 @@ public class MancalaGamePlayRule implements GamePlayRule {
 
         int[][] updatedGameBoard = performMove(game, selectedPit);
         if (shouldCaptureStones(game.getGameMatrix(), selectedPit, game.getActivePlayerIndex())) {
-             int captureIndex = calculateCaptureIndex(game, selectedPit);
-          updatedGameBoard = capturingStones(updatedGameBoard, captureIndex, game.getActivePlayerIndex());
+            int captureIndex = calculateCaptureIndex(game, selectedPit);
+            updatedGameBoard = capturingStones(updatedGameBoard, captureIndex, game.getActivePlayerIndex());
 
         }
 
-        if (shouldToggleTurn(game.getGameMatrix(), selectedPit,game.getActivePlayerIndex()))
+        if (shouldToggleTurn(game.getGameMatrix(), selectedPit, game.getActivePlayerIndex()))
             toggleTurn(game, selectedPit);
 
         if (shouldGameEnd(updatedGameBoard)) {
@@ -39,6 +39,7 @@ public class MancalaGamePlayRule implements GamePlayRule {
 
 
     }
+
     public void validatePlayableGame(GameEntity game) {
         if (!game.getStatus().equals(GameStatus.PLAYING)) {
             throw new IllegalArgumentException("The game is not in a playable state. Make sure the game is in progress.");
@@ -50,6 +51,7 @@ public class MancalaGamePlayRule implements GamePlayRule {
             throw new IllegalArgumentException("It's not " + inputPlayerName + "'s turn to play.");
         }
     }
+
     @Override
     public void validateMove(GameEntity game, int selectedPit) {
         if (selectedPit > playerPitsExcludingBigPits(game)
@@ -57,6 +59,7 @@ public class MancalaGamePlayRule implements GamePlayRule {
             throw new IllegalArgumentException("Invalid move. Please select a valid spot on the board.");
         }
     }
+
     private int calculateCaptureIndex(GameEntity game, int selectedPit) {
         int lastStoneIndex = getStonesCount(game, selectedPit) + selectedPit;
         int pitsStoneCanTraverse = calculateTotalPitsExcludingBigPits(game) + 1;
@@ -133,6 +136,7 @@ public class MancalaGamePlayRule implements GamePlayRule {
     private int playersCount(GameEntity game) {
         return game.getGameMatrix().length;
     }
+
     @Override
     public boolean shouldGameEnd(int[][] gameBoard) {
         return Arrays.stream(gameBoard)

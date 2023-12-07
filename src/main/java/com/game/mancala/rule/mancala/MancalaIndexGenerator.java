@@ -12,7 +12,7 @@ public class MancalaIndexGenerator {
                                                  int selectedRow, int selectedCol,
                                                  int stoneCount) {
 
-        // generates indexes for first row
+        // generates indexes for first row(active player pits)
         List<int[]> indexes = IntStream.range(selectedCol + 1, colNum)
                 .mapToObj(i -> new int[]{selectedRow, i}).limit(stoneCount).collect(Collectors.toList());
 
@@ -34,6 +34,7 @@ public class MancalaIndexGenerator {
     }
 
     // generates index for specific row and its columns
+    // (active player traverse through his pits from start to end)
     private static List<int[]> generateRowIndexes(int row, int colNum) {
         return IntStream.range(0, colNum)
                 .mapToObj(j -> new int[]{row, j})
@@ -41,6 +42,7 @@ public class MancalaIndexGenerator {
     }
 
     //generate index for specific row in reverse order, including last column
+    // (active player traverse through other player pits in opposite direction (from end to start) )
     private static List<int[]> generateReverseRowIndexes(int row, int colNum) {
         return IntStream.rangeClosed(0, colNum - 2)
                 .mapToObj(j -> new int[]{row, colNum - 2 - j})

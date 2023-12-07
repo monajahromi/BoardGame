@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Configuration;
 @Data
 public class MancalaConfig {
 
-  private int default_player_pits_count;
-  private int default_stones_per_pit;
-  private String game_name;
+    private int default_player_pits_count;
+    private int default_stones_per_pit;
+    private String game_name;
 
 }
