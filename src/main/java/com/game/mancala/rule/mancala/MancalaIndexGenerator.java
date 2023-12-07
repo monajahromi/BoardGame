@@ -51,6 +51,22 @@ public class MancalaIndexGenerator {
         return indexes;
     }
 
+    public static int[][] initializeGameMatrix(int pitCount, int stonesPerPit, int playersCount) {
+        // Create a 2D array with 2 rows and pitCount + 1 columns
+        int[][] pitArray = new int[playersCount][pitCount + 1];
+
+        // Initialize values in each row
+        for (int i = 0; i < playersCount; i++) {
+            for (int j = 0; j < pitCount; j++) {
+                pitArray[i][j] = stonesPerPit;
+            }
+            // Set the last index to 0 for bigPit
+            pitArray[i][pitCount] = 0;
+        }
+
+        return pitArray;
+    }
+
 
 
 }
