@@ -23,6 +23,9 @@ public class GameEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Version
+    private Long version;
+
     private String name;
     @Enumerated(EnumType.STRING)
     private GameStatus status;
