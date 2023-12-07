@@ -8,14 +8,18 @@ import com.game.mancala.repository.GameRepository;
 import com.game.mancala.rule.GameCreateRule;
 import com.game.mancala.rule.GamePlayRule;
 import com.game.mancala.utils.GameStatus;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 
+
 @Service
+@Transactional
 public class GameService {
     private final GameRepository repository;
     private final GamePlayRule playRule;
     private final GameCreateRule createRule;
+
 
     public GameService(GameRepository repository, GamePlayRule playRule, GameCreateRule createRule) {
         this.repository = repository;
