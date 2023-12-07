@@ -146,7 +146,7 @@ public class MancalaGamePlayRule implements GamePlayRule {
         var updatedBoard = deepCopyGameBoard(gameBoard);
 
         Arrays.stream(updatedBoard).forEach(row -> {
-            row[row.length - 1] = Arrays.stream(row).reduce(0, (a, b) -> a + b);
+            row[row.length - 1] = Arrays.stream(row).reduce(0, Integer::sum);
             for (int index = 0; index < row.length - 1; index++) {
                 row[index] = 0;
             }

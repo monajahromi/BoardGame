@@ -25,11 +25,9 @@ public class MancalaGameCreateRule implements GameCreateRule {
         List<Player> players = new ArrayList<>();
 
         Arrays.stream(dto.getPlayerNames())
-                .forEach(item -> {
-                    players.add(Player.builder()
-                            .name(item)
-                            .build());
-                });
+                .forEach(item -> players.add(Player.builder()
+                        .name(item)
+                        .build()));
 
         int pitsCount = dto.getPitsCount() == 0 ?
                 config.getDefault_player_pits_count() : dto.getPitsCount();
