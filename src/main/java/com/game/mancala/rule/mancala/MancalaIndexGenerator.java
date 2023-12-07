@@ -1,6 +1,5 @@
 package com.game.mancala.rule.mancala;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -12,12 +11,10 @@ public class MancalaIndexGenerator {
     public static List<int[]> provideMoveIndexes(int rowNum, int colNum,
                                                  int selectedRow, int selectedCol,
                                                  int stoneCount) {
-         List<int[]> indexes = new ArrayList<>();
 
         // generates indexes for first row
-        indexes.addAll(IntStream.range(selectedCol + 1, colNum)
-                .mapToObj(i -> new int[]{selectedRow, i}).limit(stoneCount)
-                .collect(Collectors.toList()));
+        List<int[]> indexes = IntStream.range(selectedCol + 1, colNum)
+                .mapToObj(i -> new int[]{selectedRow, i}).limit(stoneCount).collect(Collectors.toList());
 
         stoneCount -= colNum - selectedCol - 1;
         if (stoneCount <= 0)
@@ -31,7 +28,7 @@ public class MancalaIndexGenerator {
                         generateReverseRowIndexes(element, colNum))
                 .flatMap(List::stream)
                 .limit(stoneCount)
-                .collect(Collectors.toList()));
+                .toList());
 
         return indexes;
     }
@@ -45,10 +42,9 @@ public class MancalaIndexGenerator {
 
     //generate index for specific row in reverse order, including last column
     private static List<int[]> generateReverseRowIndexes(int row, int colNum) {
-        List<int[]> indexes = IntStream.rangeClosed(0, colNum - 2)
+        return IntStream.rangeClosed(0, colNum - 2)
                 .mapToObj(j -> new int[]{row, colNum - 2 - j})
                 .collect(Collectors.toList());
-        return indexes;
     }
 
     public static int[][] initializeGameMatrix(int pitCount, int stonesPerPit, int playersCount) {
@@ -66,7 +62,6 @@ public class MancalaIndexGenerator {
 
         return pitArray;
     }
-
 
 
 }
