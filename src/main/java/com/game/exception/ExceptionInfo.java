@@ -1,4 +1,4 @@
-package com.game.mancala.exception;
+package com.game.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

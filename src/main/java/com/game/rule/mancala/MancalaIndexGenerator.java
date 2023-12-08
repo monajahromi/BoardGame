@@ -1,4 +1,4 @@
-package com.game.mancala.rule.mancala;
+package com.game.rule.mancala;
 
 import java.util.List;
 import java.util.stream.Collectors;

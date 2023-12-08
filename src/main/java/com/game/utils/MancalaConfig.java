@@ -1,4 +1,4 @@
-package com.game.mancala.utils;
+package com.game.utils;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

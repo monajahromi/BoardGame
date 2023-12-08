@@ -1,7 +1,7 @@
-package com.game.mancala.rule;
+package com.game.rule;
 
 
-import com.game.mancala.model.entity.GameEntity;
+import com.game.model.entity.GameEntity;
 
 public interface GamePlayRule {
     GameEntity play(GameEntity game, String playerName, int selectedRow);

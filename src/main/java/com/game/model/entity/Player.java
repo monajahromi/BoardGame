@@ -1,4 +1,4 @@
-package com.game.mancala.model.entity;
+package com.game.model.entity;
 
 import jakarta.persistence.Embeddable;
 import lombok.*;

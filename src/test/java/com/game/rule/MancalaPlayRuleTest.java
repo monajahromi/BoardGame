@@ -1,9 +1,10 @@
-package com.game.mancala.rule;
+package com.game.rule;
 
-import com.game.mancala.model.entity.GameEntity;
-import com.game.mancala.model.entity.Player;
-import com.game.mancala.rule.mancala.MancalaGamePlayRule;
-import com.game.mancala.utils.GameStatus;
+import com.game.model.entity.GameEntity;
+import com.game.model.entity.Player;
+import com.game.rule.mancala.MancalaGamePlayRule;
+import com.game.utils.GameStatus;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -31,7 +32,7 @@ public class MancalaPlayRuleTest {
         assertEquals(expectedResult.getActivePlayerIndex(), actualResult.getActivePlayerIndex());
         assertEquals(expectedResult.getWinnerPlayerIndex(), actualResult.getWinnerPlayerIndex());
         assertArrayEquals(expectedResult.getGameMatrix(), actualResult.getGameMatrix());
-        assertEquals(expectedResult.getStatus().toString(), actualResult.getStatus().toString());
+        Assertions.assertEquals(expectedResult.getStatus().toString(), actualResult.getStatus().toString());
         assertEquals(expectedResult.getId(), actualResult.getId());
     }
 

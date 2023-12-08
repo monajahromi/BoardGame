@@ -1,13 +1,13 @@
-package com.game.mancala.service;
+package com.game.service;
 
-import com.game.mancala.exception.NotFoundException;
-import com.game.mancala.model.dto.PlayDto;
-import com.game.mancala.model.dto.StartDto;
-import com.game.mancala.model.entity.GameEntity;
-import com.game.mancala.repository.GameRepository;
-import com.game.mancala.rule.GameCreateRule;
-import com.game.mancala.rule.GamePlayRule;
-import com.game.mancala.utils.GameStatus;
+import com.game.exception.NotFoundException;
+import com.game.model.dto.PlayDto;
+import com.game.model.dto.StartDto;
+import com.game.model.entity.GameEntity;
+import com.game.repository.GameRepository;
+import com.game.rule.GameCreateRule;
+import com.game.rule.GamePlayRule;
+import com.game.utils.GameStatus;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 

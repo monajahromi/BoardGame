@@ -1,6 +1,6 @@
-package com.game.mancala.model.entity;
+package com.game.model.entity;
 
-import com.game.mancala.utils.GameStatus;
+import com.game.utils.GameStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;

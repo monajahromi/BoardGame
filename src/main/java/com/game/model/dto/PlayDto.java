@@ -1,4 +1,4 @@
-package com.game.mancala.model.dto;
+package com.game.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

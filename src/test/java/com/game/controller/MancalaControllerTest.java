@@ -1,11 +1,10 @@
 package com.game.controller;
 
-import com.game.mancala.controller.MancalaController;
-import com.game.mancala.exception.NotFoundException;
-import com.game.mancala.model.dto.PlayDto;
-import com.game.mancala.model.dto.StartDto;
-import com.game.mancala.model.entity.GameEntity;
-import com.game.mancala.service.GameService;
+import com.game.exception.NotFoundException;
+import com.game.model.dto.PlayDto;
+import com.game.model.dto.StartDto;
+import com.game.model.entity.GameEntity;
+import com.game.service.GameService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
