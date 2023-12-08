@@ -7,7 +7,9 @@ import java.util.stream.IntStream;
 public class MancalaIndexGenerator {
 
 
-    // Generates indexes based on the provided parameters.
+    /**
+     * Generates indexes based on the provided parameters.
+     */
     public static List<int[]> provideMoveIndexes(int rowNum, int colNum,
                                                  int selectedRow, int selectedCol,
                                                  int stoneCount) {
@@ -33,16 +35,24 @@ public class MancalaIndexGenerator {
         return indexes;
     }
 
-    // generates index for specific row and its columns
-    // (active player traverse through his pits from start to end)
+
+    /**
+     * Generates index for specific row and its columns
+     * (active player traverse through his pits from start to end)
+     */
     private static List<int[]> generateRowIndexes(int row, int colNum) {
         return IntStream.range(0, colNum)
                 .mapToObj(j -> new int[]{row, j})
                 .collect(Collectors.toList());
     }
 
-    //generate index for specific row in reverse order, including last column
-    // (active player traverse through other player pits in opposite direction (from end to start) )
+    //
+    //
+
+    /**
+     * generate index for specific row in reverse order, including last column
+     * (active player traverse through other player pits in opposite direction (from end to start) )
+     */
     private static List<int[]> generateReverseRowIndexes(int row, int colNum) {
         return IntStream.rangeClosed(0, colNum - 2)
                 .mapToObj(j -> new int[]{row, colNum - 2 - j})
