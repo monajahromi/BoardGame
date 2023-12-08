@@ -6,13 +6,15 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.2.0</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
     <groupId>com.game</groupId>
-    <artifactId>Mancala</artifactId>
+    <artifactId>BoardGame</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Mancala</name>
-    <description>Mancala</description>
+    <name>Board Game</name>
+    <description>Board game application, supports multiple players, each with customizable game setups and rules. Enjoy
+        games like Mancala, Chess, and more in a dynamic gaming environment.
+    </description>
     <properties>
         <java.version>17</java.version>
     </properties>
