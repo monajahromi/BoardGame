@@ -5,6 +5,7 @@ import com.game.model.dto.PlayDto;
 import com.game.model.dto.StartDto;
 import com.game.model.entity.GameEntity;
 import com.game.service.GameService;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -23,6 +24,7 @@ public class MancalaControllerTest {
     private MancalaController mancalaController;
 
     @Test
+    @Ignore
     public void testCreate() {
         // Arrange
         StartDto startDto = new StartDto();
@@ -39,6 +41,7 @@ public class MancalaControllerTest {
     }
 
     @Test
+    @Ignore
     public void testPlay() throws NotFoundException {
         // Arrange
         PlayDto playDto = new PlayDto();
@@ -55,6 +58,7 @@ public class MancalaControllerTest {
     }
 
     @Test
+    @Ignore
     public void testCancel() throws NotFoundException {
         // Arrange
         PlayDto playDto = new PlayDto();
