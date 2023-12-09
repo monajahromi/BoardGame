@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 public class StartDto {
 
     private String[] playerNames;
-    private GameStatus status;
     private int pitsCount;
     private int stonesPerPit;
 }

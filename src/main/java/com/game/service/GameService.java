@@ -12,7 +12,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 
-
 @Service
 @Transactional
 public class GameService {
@@ -35,7 +34,7 @@ public class GameService {
 
     }
 
-    public GameEntity play(PlayDto dto) throws NotFoundException {
+    public GameEntity play(PlayDto dto) {
         GameEntity game = repository.findById(dto.getGameId()).orElseThrow(
                 () -> new NotFoundException("game not found!")
         );
