@@ -1,0 +1,46 @@
+name: Deploy on server
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+jobs:
+  deploy-on-server:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate version from timestamp
+        id: step_one
+        run: echo "imageVersion=$(date +'%Y%m%d%H%M')" >> "$GITHUB_ENV"
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build and save image
+        run: |
+          docker build -t mancala:$imageVersion .
+          docker save mancala:$imageVersion  -o mancala$imageVersion.tar
+
+      - name: Transfer image to server
+        uses: up9cloud/action-rsync@v1.4
+        env:
+          HOST: 45.159.115.124
+          USER: root
+          PASSWORD: ${{ secrets.SERVER_SSH_PASSWORD  }}
+          PORT: 3031
+          SOURCE: mancala$imageVersion.tar
+          TARGET: /home/imagesArchive
+          ARGS_MORE: -avP --partial --progress
+
+      - name: delete previous image, load and run new image
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: 45.159.115.124
+          username: root
+          password: ${{ secrets.SERVER_SSH_PASSWORD  }}
+          port: 3031
+          script: |
+            cd /home/imagesArchive
+            # Stop and remove the existing container on port 8080, 8081
+            docker rm -f mancala > /dev/null 2>&1
+            docker load <  mancala${{ env.imageVersion }}.tar
+            docker  run --name  mancala -p 9090:8080 --add-host=mysql-server:172.17.0.1    -d mancala:${{ env.imageVersion }}
