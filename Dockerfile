@@ -1,4 +1,4 @@
- Use an official Maven image to build the project
+#Use an official Maven image to build the project
 FROM maven:3.8.4-openjdk-17 AS build
 # Set the working directory inside the container
 WORKDIR /app
