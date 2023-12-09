@@ -43,4 +43,4 @@ jobs:
             # Stop and remove the existing container on port 8080, 8081
             docker rm -f board-game > /dev/null 2>&1
             docker load <  board-game${{ env.imageVersion }}.tar
-            docker  run --name  board-game -p 9090:8080 --add-host=mysql-server:172.17.0.1   -e "SPRING_PROFILES_ACTIVE=prod"    -d board-game:${{ env.imageVersion }}
+            docker  run --name  board-game -p 9090:8083 --add-host=mysql-server:172.17.0.1   -e "SPRING_PROFILES_ACTIVE=prod"    -d board-game:${{ env.imageVersion }}
