@@ -17,8 +17,8 @@ jobs:
 
       - name: Build and save image
         run: |
-          docker build -t mancala:$imageVersion .
-          docker save mancala:$imageVersion  -o mancala$imageVersion.tar
+          docker build -t BoardGame:$imageVersion .
+          docker save BoardGame:$imageVersion  -o BoardGame$imageVersion.tar
 
       - name: Transfer image to server
         uses: up9cloud/action-rsync@v1.4
@@ -27,7 +27,7 @@ jobs:
           USER: root
           PASSWORD: ${{ secrets.SERVER_SSH_PASSWORD  }}
           PORT: 3031
-          SOURCE: mancala$imageVersion.tar
+          SOURCE: BoardGame$imageVersion.tar
           TARGET: /home/imagesArchive
           ARGS_MORE: -avP --partial --progress
 
@@ -41,6 +41,6 @@ jobs:
           script: |
             cd /home/imagesArchive
             # Stop and remove the existing container on port 8080, 8081
-            docker rm -f mancala > /dev/null 2>&1
-            docker load <  mancala${{ env.imageVersion }}.tar
-            docker  run --name  mancala -p 9090:8080 --add-host=mysql-server:172.17.0.1    -d mancala:${{ env.imageVersion }}
+            docker rm -f BoardGame > /dev/null 2>&1
+            docker load <  BoardGame${{ env.imageVersion }}.tar
+            docker  run --name  BoardGame -p 9090:8080 --add-host=mysql-server:172.17.0.1    -d BoardGame:${{ env.imageVersion }}
