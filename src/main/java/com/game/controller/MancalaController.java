@@ -22,20 +22,28 @@ public class MancalaController {
     }
 
     @PostMapping("start")
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<GameEntity> create(@RequestBody StartDto dto) {
         return new ResponseEntity<>(gameService.create(dto), HttpStatus.CREATED);
     }
 
     @PutMapping("play")
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<GameEntity> play(@RequestBody PlayDto dto) throws NotFoundException {
         return new ResponseEntity<>(gameService.play(dto), HttpStatus.CREATED);
     }
 
     @PutMapping("cancel")
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<GameEntity> cancel(@RequestBody PlayDto dto) throws NotFoundException {
         return new ResponseEntity<>(gameService.cancel(dto), HttpStatus.CREATED);
     }
+
+    @GetMapping("test")
+    @CrossOrigin(origins = "*")
+    public ResponseEntity<String> test() throws NotFoundException {
+        return new ResponseEntity<>("test", HttpStatus.OK);
+    }
+
+
 }
