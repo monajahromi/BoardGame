@@ -46,7 +46,6 @@ public class MancalaGameCreateRule implements GameCreateRule {
         return game;
     }
 
-
     @Override
     public void setInitialPlayerTurn(GameEntity gameEntity) {
         gameEntity.setActivePlayerIndex(0);

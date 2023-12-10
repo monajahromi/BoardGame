@@ -1,4 +1,4 @@
-package com.game.rule;
+package com.game.rule.mancala;
 
 import com.game.model.entity.GameEntity;
 import com.game.model.entity.Player;
