@@ -22,13 +22,13 @@ public class MancalaController {
 
     @PostMapping("/start")
     @CrossOrigin(origins = "*")
-    public ResponseEntity<GameEntity> create(@RequestBody StartDto dto) {
+    public ResponseEntity<GameEntity> create(@Validated @RequestBody StartDto dto) {
         return new ResponseEntity<>(gameService.create(dto), HttpStatus.CREATED);
     }
 
     @PutMapping("/play")
     @CrossOrigin(origins = "*")
-    public ResponseEntity<GameEntity> play(@RequestBody PlayDto dto) {
+    public ResponseEntity<GameEntity> play(@Validated @RequestBody PlayDto dto) {
         return new ResponseEntity<>(gameService.play(dto), HttpStatus.OK);
     }
 
