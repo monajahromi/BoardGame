@@ -118,11 +118,6 @@ public class MancalaPlayRuleTest {
                 .build();
     }
 
-
-    private void printMatrix(int[][] matrix) {
-        Arrays.stream(matrix).forEach(item -> System.out.println(Arrays.toString(item)));
-    }
-
     @ParameterizedTest
     @MethodSource("shouldToggleTurn_data")
     public void testShouldToggleTurn(int[][] gameBoard, int selectedPit, int playerIndex, boolean expectedResult) {

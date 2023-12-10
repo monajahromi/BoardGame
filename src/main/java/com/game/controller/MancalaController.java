@@ -1,6 +1,5 @@
 package com.game.controller;
 
-import com.game.exception.NotFoundException;
 import com.game.model.dto.PlayDto;
 import com.game.model.dto.StartDto;
 import com.game.model.entity.GameEntity;
@@ -29,7 +28,7 @@ public class MancalaController {
 
     @PutMapping("/play")
     @CrossOrigin(origins = "*")
-    public ResponseEntity<GameEntity> play(@RequestBody PlayDto dto)  {
+    public ResponseEntity<GameEntity> play(@RequestBody PlayDto dto) {
         return new ResponseEntity<>(gameService.play(dto), HttpStatus.OK);
     }
 
