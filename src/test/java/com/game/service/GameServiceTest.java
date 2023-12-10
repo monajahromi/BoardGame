@@ -9,9 +9,9 @@ import com.game.repository.GameRepository;
 import com.game.rule.GameCreateRule;
 import com.game.rule.GamePlayRule;
 import com.game.utils.GameStatus;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -40,11 +39,6 @@ public class GameServiceTest {
     private GameCreateRule createRuleMock;
     @InjectMocks
     private GameService gameService;
-
-
-    @BeforeEach
-    void setUp() {
-    }
 
     @DisplayName("Create Game - Success Scenario")
     @Test
@@ -94,7 +88,7 @@ public class GameServiceTest {
     @DisplayName("Play Game - Failure Scenario")
     @Test
     void test_When_Play_Not_Found_Game() {
-        when(gameRepositoryMock.findById(anyLong())).thenReturn(Optional.ofNullable(null));
+        when(gameRepositoryMock.findById(anyLong())).thenReturn(Optional.empty());
 
         NotFoundException notFoundException =
                 assertThrows(NotFoundException.class, () -> gameService.play(getPlayDto()));
@@ -107,27 +101,28 @@ public class GameServiceTest {
     @DisplayName("Cancel Game - Success Scenario")
     @Test
     void test_When_Cancel_Success() {
-        GameEntity gameEntity = getGameEntity();
-        when(gameRepositoryMock.findById(anyLong())).thenReturn(Optional.of(gameEntity));
-        when(gameRepositoryMock.save(any(GameEntity.class))).thenReturn(gameEntity);
+        GameEntity spyGameEntity = spy(getGameEntity());
+        when(gameRepositoryMock.findById(anyLong())).thenReturn(Optional.of(spyGameEntity));
+        when(gameRepositoryMock.save(any(GameEntity.class))).thenReturn(spyGameEntity);
 
         GameEntity actualGameEntity = gameService.cancel(getPlayDto());
+        ArgumentCaptor<GameEntity> gameEntityArgumentCaptor = ArgumentCaptor.forClass(GameEntity.class);
 
         verify(gameRepositoryMock, times(1)).findById(anyLong());
         verify(gameRepositoryMock, times(1)).save(any(GameEntity.class));
+        verify(spyGameEntity, times(1)).setStatus(GameStatus.CANCELED);
 
         assertNotNull(actualGameEntity);
-        assertEquals(gameEntity.getId(), actualGameEntity.getId());
-        assertEquals(GameStatus.CANCELED, actualGameEntity.getStatus());
-        assertEquals(gameEntity.getName(), actualGameEntity.getName());
-        assertArrayEquals(gameEntity.getGameMatrix(), actualGameEntity.getGameMatrix());
+        assertEquals(spyGameEntity.getId(), actualGameEntity.getId());
+        assertEquals(spyGameEntity.getName(), actualGameEntity.getName());
+        assertArrayEquals(spyGameEntity.getGameMatrix(), actualGameEntity.getGameMatrix());
 
     }
 
     @DisplayName("Cancel Game - Failed Scenario")
     @Test
     void test_When_Cancel_Not_Found_Game() {
-        when(gameRepositoryMock.findById(anyLong())).thenReturn(Optional.ofNullable(null));
+        when(gameRepositoryMock.findById(anyLong())).thenReturn(Optional.empty());
 
         NotFoundException notFoundException =
                 assertThrows(NotFoundException.class, () -> gameService.cancel(getPlayDto()));
