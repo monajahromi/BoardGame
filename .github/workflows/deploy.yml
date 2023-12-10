@@ -24,7 +24,7 @@ jobs:
         uses: up9cloud/action-rsync@v1.4
         env:
           HOST: ${{ secrets.SERVER_URL  }}
-          USER: {{ secrets.SERVER_SSH_USER  }}
+          USER: ${{ secrets.SERVER_SSH_USER  }}
           PASSWORD: ${{ secrets.SERVER_SSH_PASSWORD  }}
           PORT: ${{ secrets.SERVER_SSH_PORT  }}
           SOURCE: board-game$imageVersion.tar
