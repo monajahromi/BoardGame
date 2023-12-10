@@ -42,8 +42,8 @@ public class GameService {
         return repository.save(playRule.play(game, dto.getPlayerName(), dto.getSelectedPit()));
     }
 
-    public GameEntity cancel(PlayDto dto) throws NotFoundException {
-        GameEntity game = repository.findById(dto.getGameId()).orElseThrow(
+    public GameEntity cancel(Long gameId) throws NotFoundException {
+        GameEntity game = repository.findById(gameId).orElseThrow(
                 () -> new NotFoundException("game not found!")
         );
         game.setStatus(GameStatus.CANCELED);

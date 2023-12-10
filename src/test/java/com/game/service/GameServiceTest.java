@@ -40,9 +40,9 @@ public class GameServiceTest {
     @InjectMocks
     private GameService gameService;
 
-    @DisplayName("Create Game - Success Scenario")
+    @DisplayName("Create Game")
     @Test
-    void test_When_Create_Success() {
+    void test_Create() {
         GameEntity gameEntity = getGameEntity();
         when(createRuleMock.setupNewGame(any(StartDto.class))).thenReturn(gameEntity);
         when(gameRepositoryMock.save(any(GameEntity.class))).thenReturn(gameEntity);
@@ -105,7 +105,7 @@ public class GameServiceTest {
         when(gameRepositoryMock.findById(anyLong())).thenReturn(Optional.of(spyGameEntity));
         when(gameRepositoryMock.save(any(GameEntity.class))).thenReturn(spyGameEntity);
 
-        GameEntity actualGameEntity = gameService.cancel(getPlayDto());
+        GameEntity actualGameEntity = gameService.cancel(GAME_ID);
         ArgumentCaptor<GameEntity> gameEntityArgumentCaptor = ArgumentCaptor.forClass(GameEntity.class);
 
         verify(gameRepositoryMock, times(1)).findById(anyLong());
@@ -125,7 +125,7 @@ public class GameServiceTest {
         when(gameRepositoryMock.findById(anyLong())).thenReturn(Optional.empty());
 
         NotFoundException notFoundException =
-                assertThrows(NotFoundException.class, () -> gameService.cancel(getPlayDto()));
+                assertThrows(NotFoundException.class, () -> gameService.cancel(GAME_ID));
         assertEquals("game not found!", notFoundException.getMessage());
         verify(gameRepositoryMock, times(1)).findById(anyLong());
 

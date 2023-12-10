@@ -21,28 +21,23 @@ public class MancalaController {
         this.gameService = gameService;
     }
 
-    @PostMapping("start")
+    @PostMapping("/start")
     @CrossOrigin(origins = "*")
     public ResponseEntity<GameEntity> create(@RequestBody StartDto dto) {
         return new ResponseEntity<>(gameService.create(dto), HttpStatus.CREATED);
     }
 
-    @PutMapping("play")
+    @PutMapping("/play")
     @CrossOrigin(origins = "*")
-    public ResponseEntity<GameEntity> play(@RequestBody PlayDto dto) throws NotFoundException {
+    public ResponseEntity<GameEntity> play(@RequestBody PlayDto dto)  {
         return new ResponseEntity<>(gameService.play(dto), HttpStatus.OK);
     }
 
-    @PutMapping("cancel")
+    @DeleteMapping("/{gameId}")
     @CrossOrigin(origins = "*")
-    public ResponseEntity<GameEntity> cancel(@RequestBody PlayDto dto) throws NotFoundException {
-        return new ResponseEntity<>(gameService.cancel(dto), HttpStatus.OK);
-    }
-
-    @GetMapping("test")
-    @CrossOrigin(origins = "*")
-    public ResponseEntity<String> test() throws NotFoundException {
-        return new ResponseEntity<>("test", HttpStatus.OK);
+    public ResponseEntity<String> cancel(@PathVariable Long gameId) {
+        gameService.cancel(gameId);
+        return new ResponseEntity<>("Game canceled successfully", HttpStatus.OK);
     }
 
 
