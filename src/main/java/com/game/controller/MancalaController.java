@@ -30,13 +30,13 @@ public class MancalaController {
     @PutMapping("play")
     @CrossOrigin(origins = "*")
     public ResponseEntity<GameEntity> play(@RequestBody PlayDto dto) throws NotFoundException {
-        return new ResponseEntity<>(gameService.play(dto), HttpStatus.CREATED);
+        return new ResponseEntity<>(gameService.play(dto), HttpStatus.OK);
     }
 
     @PutMapping("cancel")
     @CrossOrigin(origins = "*")
     public ResponseEntity<GameEntity> cancel(@RequestBody PlayDto dto) throws NotFoundException {
-        return new ResponseEntity<>(gameService.cancel(dto), HttpStatus.CREATED);
+        return new ResponseEntity<>(gameService.cancel(dto), HttpStatus.OK);
     }
 
     @GetMapping("test")
