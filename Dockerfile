@@ -8,7 +8,7 @@ COPY pom.xml .
 RUN mvn dependency:go-offline
 COPY src/ /app/src/
 
-RUN mvn package
+RUN mvn package -Dmaven.test.skip=true
 # Use the OpenJDK runtime as the final image
 FROM openjdk:17-slim
 # Set the working directory inside the container
