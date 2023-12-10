@@ -1,5 +1,6 @@
 package com.game.exception;
 
+import jakarta.persistence.OptimisticLockException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,16 @@ public class ExceptionAdvice {
                 .body(ExceptionInfo.builder()
                         .message(exception.getMessage())
                         .status(HttpStatus.NOT_FOUND.value())
+                        .build()
+                );
+    }
+
+    @ExceptionHandler(OptimisticLockException.class)
+    public ResponseEntity<ExceptionInfo> handleOptimisticLockException(OptimisticLockException exception) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(ExceptionInfo.builder()
+                        .message("Conflict: The resource has been modified by another client.")
+                        .status(HttpStatus.CONFLICT.value())
                         .build()
                 );
     }
