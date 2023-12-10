@@ -19,11 +19,11 @@ and rules.
 ### Build and Run Locally
 1. Clone the repository:
     ```shell
-    git clone https://github.com/your-username/board-game-application.git
+    git clone https://github.com/monajahromi/BoardGame.git
     ```
 2. Navigate to the project directory:
     ```shell
-    cd board-game-application 
+    cd BoardGame 
     ```
 3. Build the project:
     ```shell
