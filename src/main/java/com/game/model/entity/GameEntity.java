@@ -1,5 +1,6 @@
 package com.game.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.game.utils.GameStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,6 +25,7 @@ public class GameEntity {
     Long id;
 
     @Version
+    @JsonIgnore
     private Long version;
 
     private String name;
