@@ -28,7 +28,7 @@ jobs:
           PASSWORD: ${{ secrets.SERVER_SSH_PASSWORD  }}
           PORT: ${{ secrets.SERVER_SSH_PORT  }}
           SOURCE: board-game$imageVersion.tar
-          TARGET: /home/imagesArchive
+          TARGET: ${{ secrets.SERVER_TARGET  }}
           ARGS_MORE: -avP --partial --progress
 
       - name: delete previous image, load and run new image
@@ -39,7 +39,7 @@ jobs:
           password: ${{ secrets.SERVER_SSH_PASSWORD  }}
           port: ${{ secrets.SERVER_SSH_PORT  }}
           script: |
-            cd /home/imagesArchive
+            cd ${{ secrets.SERVER_TARGET  }}
             # Stop and remove the existing container on port 8080, 8081
             docker rm -f board-game > /dev/null 2>&1
             docker load <  board-game${{ env.imageVersion }}.tar
