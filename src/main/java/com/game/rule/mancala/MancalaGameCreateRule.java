@@ -6,7 +6,7 @@ import com.game.model.entity.GameEntity;
 import com.game.model.entity.Player;
 import com.game.rule.GameCreateRule;
 import com.game.utils.GameStatus;
-import com.game.utils.MancalaConfig;
+import com.game.config.MancalaConfig;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
