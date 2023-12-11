@@ -78,6 +78,18 @@ the game is the player who has the most stones in his big pit.
   ]
 }
 ```
+In the Mancala game matrix, the number of rows corresponds to the number of players. 
+Each row represents the pits associated with a specific player.
+The first row signifies the pits of the first player, the second row is associated with the second player, and so forth. 
+Within each row, the last item represents the player's big pit. Initially, at the start of the game, the value in the last position of each row is set to zero.
+
+```
+Player 1: [pit, pit, pit, pit, pit, pit, bigPit]
+Player 2: [pit, pit, pit, pit, pit, pit, bigPit]
+...
+Player N: [pit, pit, pit, pit, pit, pit, bigPit]
+
+```
 
 ### Play a Move
 - **Endpoint**: PUT /mancala/play

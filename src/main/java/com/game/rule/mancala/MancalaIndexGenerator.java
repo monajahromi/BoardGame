@@ -50,7 +50,17 @@ public class MancalaIndexGenerator {
     }
 
 
-    // Initialize mancala board for play on pit count stones each pit can contain, and number of players
+    /* Initialize mancala board for play on pit count stones each pit can contain, and number of players
+       Each player has a row of pits in gameMatrix.
+       The pits are represented as individual elements in the row.
+       The last element in each row represents the player's big pit.
+
+
+       Player 1: [pit, pit, pit, pit, pit, pit, bigPit]
+       Player 2: [pit, pit, pit, pit, pit, pit, bigPit]
+               ...
+       Player N: [pit, pit, pit, pit, pit, pit, bigPit]
+       */
     public static int[][] initializeGameMatrix(int pitCount, int stonesPerPit, int playersCount) {
         // Create a 2D array with 2 rows and pitCount + 1 columns
         int[][] pitArray = new int[playersCount][pitCount + 1];
