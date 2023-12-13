@@ -43,38 +43,17 @@ the game is the player who has the most stones in his big pit.
 - **Response Example**
 ```json
 {
-  "id": 5,
+  "id": 2,
   "name": "Mancala",
   "status": "PLAYING",
   "gameMatrix": [
-    [
-      6,
-      6,
-      6,
-      6,
-      6,
-      6,
-      0
-    ],
-    [
-      6,
-      6,
-      6,
-      6,
-      6,
-      6,
-      0
-    ]
+    [6, 6, 6, 6, 6, 6, 0],
+    [6, 6, 6, 6, 6, 6, 0]
   ],
   "activePlayerIndex": 0,
-  "winnerPlayerIndex": 0,
   "players": [
-    {
-      "name": "Hana"
-    },
-    {
-      "name": "Mona"
-    }
+    {"name": "Hana"},
+    {"name": "Mona"}
   ]
 }
 ```
@@ -106,42 +85,56 @@ Player N: [pit, pit, pit, pit, pit, pit, bigPit]
 - **Response Example**:
 ```json
 {
-    "id": 5,
-    "version": 1,
+  "id": 5,
+  "name": "Mancala",
+  "status": "PLAYING",
+  "gameMatrix": [
+    [6, 6, 6, 0, 7, 7, 1],
+    [6, 6, 6, 7, 7, 7, 0]
+  ],
+  "activePlayerIndex": 1,
+  "players": [
+    {"name": "Hana"},
+    {"name": "Mona"}
+  ]
+}
+```
+in the above response:
+- "id": 3: Indicates the unique identifier of the game.
+- "name": "Mancala": Specifies the name of the game as "Mancala."
+- "status": "PLAYING": Indicates that the game is currently in progress.
+- "gameMatrix": Represents the current state of the game board with two rows, each corresponding to a player's pits. The last element in each row represents the Mancala (large pit) for each player.
+- "activePlayerIndex": 1: Specifies that it is currently player with index 1 (Mona)'s turn to play.
+- "players": Contains an array of player objects, each with a "name" property. In this case, there are two players - "Hana" and "Mona."
+
+
+#### Finishing game
+If a player successfully completes the game by emptying all the stones in all pits,
+the result will include a property called 'winnerPlayerIndex,' indicating the index of the winning player.
+The status will be set to FINISHED.
+response example : 
+```json
+{
+    "id": 1,
     "name": "Mancala",
-    "status": "PLAYING",
-    "gameMatrix": [
-        [
-            6,
-            6,
-            6,
-            0,
-            7,
-            7,
-            1
-        ],
-        [
-            6,
-            6,
-            6,
-            7,
-            7,
-            7,
-            0
-        ]
-    ],
-    "activePlayerIndex": 1,
-    "winnerPlayerIndex": 0,
+    "status": "FINISHED",
+  "gameMatrix": [
+    [0, 0, 0, 0, 0, 0, 20],
+    [0, 0, 0, 0, 0, 0, 52]
+  ],
+    "winnerPlayerIndex": 1,
     "players": [
-        {
-            "name": "Hana"
-        },
-        {
-            "name": "Mona"
-        }
+        {"name": "Hana"},
+        {"name": "Mona"}
     ]
 }
 ```
+- "id": 1: Indicates the unique identifier of the game.
+- "name": "Mancala": Specifies the name of the game as "Mancala."
+- "status": "FINISHED": Indicates that the game has finished.
+- "gameMatrix": Represents the state of the game board with two rows, each corresponding to a player's pits. The last element in each row represents the Mancala (large pit) for each player.
+- "winnerPlayerIndex": 1: Specifies that the player with index 1 (Mona) is the winner.
+- "players": Contains an array of player objects, each with a "name" property. In this case, there are two players - "Hana" and "Mona."
 
 ### Cancel a Game
 
