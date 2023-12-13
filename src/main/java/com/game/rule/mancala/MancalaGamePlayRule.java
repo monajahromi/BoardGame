@@ -32,6 +32,7 @@ public class MancalaGamePlayRule implements GamePlayRule {
             game.setStatus(GameStatus.FINISHED);
             updatedGameBoard = onGameEnd(updatedGameBoard);
             game.setWinnerPlayerIndex(findWinningPlayer(updatedGameBoard));
+            game.setActivePlayerIndex(null);
         }
         game.setGameMatrix(updatedGameBoard);
 

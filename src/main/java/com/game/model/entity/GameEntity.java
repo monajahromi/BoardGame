@@ -1,6 +1,8 @@
 package com.game.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.game.utils.GameStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -18,6 +20,7 @@ import java.util.List;
 @Table(name = "game")
 @Builder
 @EqualsAndHashCode
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class GameEntity {
 
     @Id
@@ -35,8 +38,8 @@ public class GameEntity {
     @JdbcTypeCode(SqlTypes.JSON)
     private int[][] gameMatrix;
 
-    private int activePlayerIndex;
-    private int winnerPlayerIndex;
+    private Integer activePlayerIndex;
+    private Integer winnerPlayerIndex;
 
     @ElementCollection
     @CollectionTable(name = "game_player",
