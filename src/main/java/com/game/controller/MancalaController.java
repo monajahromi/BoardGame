@@ -4,6 +4,7 @@ import com.game.model.dto.PlayDto;
 import com.game.model.dto.StartDto;
 import com.game.model.entity.GameEntity;
 import com.game.service.GameService;
+import com.game.service.MancalaGameService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -14,9 +15,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/mancala")
 @Validated
 public class MancalaController {
-    private final GameService gameService;
+    private final MancalaGameService gameService;
 
-    public MancalaController(GameService gameService) {
+    public MancalaController(MancalaGameService gameService) {
         this.gameService = gameService;
     }
 

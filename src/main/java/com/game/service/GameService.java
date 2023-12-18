@@ -9,36 +9,26 @@ import com.game.rule.GameCreateRule;
 import com.game.rule.GamePlayRule;
 import com.game.utils.GameStatus;
 import jakarta.transaction.Transactional;
-import org.springframework.stereotype.Service;
+import lombok.AllArgsConstructor;
 
-
-@Service
 @Transactional
-public class GameService {
+@AllArgsConstructor
+public class GameService <PR extends GamePlayRule, CR extends GameCreateRule >{
     private final GameRepository repository;
-    private final GamePlayRule playRule;
-    private final GameCreateRule createRule;
-
-
-    public GameService(GameRepository repository, GamePlayRule playRule, GameCreateRule createRule) {
-        this.repository = repository;
-        this.playRule = playRule;
-        this.createRule = createRule;
-    }
+    private final PR playRule;
+    private final CR createRule;
 
     public GameEntity create(StartDto dto) {
         GameEntity game = createRule.setupNewGame(dto);
         createRule.setInitialPlayerTurn(game);
         repository.save(game);
         return game;
-
     }
 
     public GameEntity play(PlayDto dto) {
         GameEntity game = repository.findById(dto.getGameId()).orElseThrow(
                 () -> new NotFoundException("game not found!")
         );
-
         return repository.save(playRule.play(game, dto.getPlayerName(), dto.getSelectedPit()));
     }
 
@@ -47,7 +37,6 @@ public class GameService {
                 () -> new NotFoundException("game not found!")
         );
         game.setStatus(GameStatus.CANCELED);
-
         return repository.save(game);
     }
 }
